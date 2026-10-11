@@ -47,6 +47,7 @@ interface LocationPickerModalProps {
   lines: Line[];
   onSelectCoords: (coords: [number, number], label?: string) => void;
   onStartMapPick: () => void;
+  onRequestDeviceGPS?: () => void;
 }
 
 export function LocationPickerModal({
@@ -58,10 +59,9 @@ export function LocationPickerModal({
   lines,
   onSelectCoords,
   onStartMapPick,
+  onRequestDeviceGPS,
 }: LocationPickerModalProps) {
   const [search, setSearch] = useState('');
-  const [gpsLoading, setGpsLoading] = useState(false);
-  const [gpsError, setGpsError] = useState('');
 
   // Station search results
   const searchResults = useMemo(() => {
@@ -105,67 +105,29 @@ export function LocationPickerModal({
   if (!isOpen) return null;
 
   const handleDeviceGPS = () => {
-    if (!navigator.geolocation) {
-      setGpsError(lang === 'am' ? 'በዚህ ብሮውዘር ላይ ጂፒኤስ አይደገፍም' : 'Geolocation is not supported by your browser');
-      return;
+    // Crucial for mobile / Android: close the modal overlay first so Android does NOT
+    // block the browser permission prompt with "This site can't ask for your permission. Close any bubbles or overlays".
+    onClose();
+    if (onRequestDeviceGPS) {
+      setTimeout(() => {
+        onRequestDeviceGPS();
+      }, 100);
     }
-    setGpsLoading(true);
-    setGpsError('');
-
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        setGpsLoading(false);
-        onSelectCoords([pos.coords.latitude, pos.coords.longitude], lang === 'am' ? 'የመሣሪያ ጂፒኤስ' : 'Device GPS');
-        onClose();
-      },
-      () => {
-        setGpsLoading(false);
-        setGpsError(
-          lang === 'am'
-            ? 'ትክክለኛ ጂፒኤስ ማግኘት አልተቻለም (በኮምፒውተር ላይ የአይፒ አድራሻ የተሳሳተ ሊሆን ይችላል)። እባክዎ ከታች ሰፈር ይምረጡ!'
-            : 'Could not acquire precise GPS (PCs often report incorrect IP locations). Please pick a neighborhood below!'
-        );
-      },
-      { enableHighAccuracy: true, timeout: 8000, maximumAge: 0 }
-    );
   };
 
   return (
     <div
-      style={{
-        position: 'fixed',
-        inset: 0,
-        zIndex: 2000,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        background: 'rgba(16, 42, 67, 0.65)',
-        backdropFilter: 'blur(6px)',
-        padding: '16px',
-        animation: 'fadeIn 0.2s ease',
-      }}
+      className="location-picker-overlay"
       onClick={onClose}
     >
       <div
-        style={{
-          width: '100%',
-          maxWidth: 520,
-          maxHeight: '90vh',
-          background: 'var(--color-surface)',
-          borderRadius: 20,
-          border: '1px solid var(--color-border)',
-          boxShadow: '0 20px 48px -12px rgba(16, 42, 67, 0.35)',
-          display: 'flex',
-          flexDirection: 'column',
-          overflow: 'hidden',
-          animation: 'slideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1)',
-        }}
+        className="location-picker-card"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
         <div
           style={{
-            padding: '18px 20px 14px',
+            padding: '16px 20px 14px',
             borderBottom: '1px solid var(--color-border)',
             display: 'flex',
             alignItems: 'center',
@@ -193,8 +155,8 @@ export function LocationPickerModal({
               </h3>
               <p style={{ fontSize: '0.78rem', color: 'var(--color-text-muted)', margin: '2px 0 0' }}>
                 {lang === 'am'
-                  ? 'በኮምፒውተር ላይ ጂፒኤስ ስለሌለ ትክክለኛ ሰፈርህን እዚህ ምረጥ'
-                  : 'Desktop PCs lack GPS chips. Select your neighborhood or tap map!'}
+                  ? 'ሰፈርህን ምረጥ ወይም ካርታው ላይ ጠቁም'
+                  : 'Select your neighborhood or tap directly on the map'}
               </p>
             </div>
           </div>
@@ -229,28 +191,11 @@ export function LocationPickerModal({
             className="btn btn-secondary"
             style={{ gap: 6, height: 42, fontSize: '0.82rem', padding: '0 14px' }}
             onClick={handleDeviceGPS}
-            disabled={gpsLoading}
           >
             <Crosshair size={15} color="var(--color-primary)" />
-            {gpsLoading ? (lang === 'am' ? 'በመፈለግ ላይ...' : 'Locating...') : (lang === 'am' ? 'የብሮውዘር ጂፒኤስ' : 'Device GPS')}
+            <span>{lang === 'am' ? 'የመሣሪያ ጂፒኤስ' : 'Device GPS'}</span>
           </button>
         </div>
-
-        {gpsError && (
-          <div
-            style={{
-              margin: '0 20px 10px',
-              padding: '8px 12px',
-              background: '#FFFBEA',
-              border: '1px solid #FFE58F',
-              borderRadius: 8,
-              fontSize: '0.78rem',
-              color: '#D46B08',
-            }}
-          >
-            ⚠️ {gpsError}
-          </div>
-        )}
 
         {/* Search input */}
         <div style={{ padding: '0 20px 12px' }}>

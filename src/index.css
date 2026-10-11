@@ -406,11 +406,138 @@ a:hover { text-decoration: underline; }
 }
 
 @media (max-width: 768px) {
+  .urban-app-layout {
+    height: calc(100% - 56px - 60px); /* 56px top nav + 60px bottom nav */
+  }
   .urban-desktop-sidebar {
     display: none; /* On mobile, uses bottom sheets */
   }
-  .urban-top-nav-center {
-    display: none; /* Mobile search is accessible on map or bottom sheet */
+  .top-nav-desktop-only {
+    display: none !important;
+  }
+  .urban-top-navbar {
+    height: 56px !important;
+    padding: 0 10px !important;
+  }
+  .top-navbar-brand-wrap {
+    gap: 8px !important;
+  }
+  .top-navbar-search-wrap {
+    margin: 0 8px !important;
+    flex: 1 !important;
+    min-width: 0 !important;
+  }
+  .top-nav-loc-btn {
+    padding: 5px 8px !important;
+    font-size: 0.74rem !important;
+  }
+  .top-nav-loc-btn span {
+    max-width: 72px !important;
+  }
+}
+
+/* ── Location Permission Floating Banner ─────────────────── */
+.location-permission-banner {
+  position: absolute;
+  top: 14px;
+  left: 16px;
+  right: 16px;
+  max-width: 480px;
+  margin: 0 auto;
+  z-index: 850;
+  background-color: var(--color-surface);
+  border-radius: var(--radius-card);
+  border: 1.5px solid var(--color-primary);
+  box-shadow: 0 8px 24px rgba(16, 42, 67, 0.16);
+  padding: 10px 14px;
+  animation: slideDown 0.22s ease-out;
+}
+
+@media (max-width: 768px) {
+  .location-permission-banner {
+    top: auto;
+    bottom: 74px; /* Floating right above bottom nav */
+    left: 10px;
+    right: 10px;
+    padding: 8px 12px;
+  }
+}
+
+.location-permission-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.location-permission-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.location-permission-text strong {
+  font-size: 0.84rem;
+  color: var(--color-text);
+  line-height: 1.2;
+}
+
+.location-permission-text span {
+  font-size: 0.71rem;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.location-permission-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+/* ── Location Picker Modal / Mobile Bottom Sheet ─────────── */
+.location-picker-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(16, 42, 67, 0.55);
+  padding: 16px;
+  animation: fadeIn 0.18s ease;
+}
+
+.location-picker-card {
+  width: 100%;
+  max-width: 520px;
+  max-height: 88vh;
+  background-color: var(--color-surface);
+  border-radius: 20px;
+  border: 1px solid var(--color-border);
+  box-shadow: 0 16px 40px rgba(16, 42, 67, 0.28);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: slideUp 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (max-width: 768px) {
+  .location-picker-overlay {
+    align-items: flex-end;
+    padding: 0;
+  }
+  .location-picker-card {
+    max-width: 100%;
+    max-height: 85vh;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+    box-shadow: 0 -8px 32px rgba(16, 42, 67, 0.24);
   }
 }
 

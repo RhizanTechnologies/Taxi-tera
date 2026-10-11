@@ -720,93 +720,73 @@ export default function MapPage() {
             </div>
           )}
 
-          {/* Permission Request Card (Ask Location & Figure Out) */}
+          {/* Permission Request Banner (Ask Location & Figure Out) */}
           {showPermissionPrompt && (
-            <div
-              style={{
-                position: 'absolute',
-                top: 60,
-                left: 16,
-                right: 16,
-                maxWidth: 480,
-                margin: '0 auto',
-                zIndex: 860,
-                background: 'var(--color-surface)',
-                borderRadius: 16,
-                border: '1.5px solid var(--color-primary)',
-                boxShadow: '0 12px 32px rgba(16, 42, 67, 0.22)',
-                padding: '16px 18px',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 12,
-                animation: 'slideDown 0.25s cubic-bezier(0.16, 1, 0.3, 1)',
-              }}
-            >
-              <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
-                <div
-                  style={{
-                    width: 38,
-                    height: 38,
-                    borderRadius: '50%',
-                    background: 'rgba(8, 126, 139, 0.12)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: 'var(--color-primary)',
-                    flexShrink: 0,
-                  }}
-                >
-                  <Navigation size={20} />
-                </div>
-                <div style={{ flex: 1 }}>
-                  <div style={{ fontWeight: 800, fontSize: '0.94rem', color: 'var(--color-text)', marginBottom: 3 }}>
-                    {i18n.language === 'am' ? 'ያለህበትን ቦታ እንወቅ?' : 'Allow Location Access?'}
+            <div className="location-permission-banner">
+              <div className="location-permission-content">
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10, minWidth: 0, flex: 1 }}>
+                  <div
+                    style={{
+                      width: 32,
+                      height: 32,
+                      borderRadius: '50%',
+                      background: 'rgba(8, 126, 139, 0.12)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: 'var(--color-primary)',
+                      flexShrink: 0,
+                    }}
+                  >
+                    <Navigation size={16} />
                   </div>
-                  <div style={{ fontSize: '0.78rem', color: 'var(--color-text-muted)', lineHeight: 1.4 }}>
-                    {i18n.language === 'am'
-                      ? 'ታክሲ ተራ በአቅራቢያህ ያሉ የታክሲ ተራዎችን፣ የታሪፍ መረጃዎችን እና የእግር ጉዞዎችን ለማሳየት መገኛህን ይጠቀማል።'
-                      : 'Taxi Tera uses your location to show nearby taxi teras, live walking paths, and accurate fares.'}
+                  <div className="location-permission-text">
+                    <strong>{i18n.language === 'am' ? 'ያለህበትን ቦታ እንወቅ?' : 'Allow Location?'}</strong>
+                    <span>
+                      {i18n.language === 'am'
+                        ? 'በአቅራቢያ ያሉ ታክሲ ተራዎችን ለማሳየት'
+                        : 'To show nearby taxi teras & fares'}
+                    </span>
                   </div>
                 </div>
-                <button
-                  type="button"
-                  style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--color-text-muted)', padding: 4 }}
-                  onClick={() => {
-                    setShowPermissionPrompt(false);
-                    localStorage.setItem('tt-location-mode', 'dismissed');
-                  }}
-                  aria-label="Dismiss"
-                >
-                  <X size={16} />
-                </button>
-              </div>
 
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8, justifyContent: 'flex-end', flexWrap: 'wrap' }}>
-                <button
-                  type="button"
-                  className="btn btn-secondary btn-sm"
-                  style={{ height: 32, fontSize: '0.78rem', padding: '0 12px', gap: 6 }}
-                  onClick={() => {
-                    setShowPermissionPrompt(false);
-                    setShowLocationPicker(true);
-                  }}
-                >
-                  <MapPin size={13} />
-                  {i18n.language === 'am' ? 'በእጅ ምረጥ (Manual)' : 'Set Manually'}
-                </button>
-
-                <button
-                  type="button"
-                  className="btn btn-primary btn-sm"
-                  style={{ height: 32, fontSize: '0.78rem', padding: '0 14px', gap: 6 }}
-                  onClick={() => requestGPSLocation(true)}
-                  disabled={permissionChecking}
-                >
-                  <Navigation size={13} />
-                  {permissionChecking
-                    ? (i18n.language === 'am' ? 'በመፈለግ ላይ...' : 'Finding...')
-                    : (i18n.language === 'am' ? 'ቦታዬን ፍቀድ (Use GPS)' : 'Allow GPS Location')}
-                </button>
+                <div className="location-permission-actions">
+                  <button
+                    type="button"
+                    className="btn btn-primary btn-sm"
+                    style={{ height: 32, fontSize: '0.78rem', padding: '0 12px' }}
+                    onClick={() => requestGPSLocation(true)}
+                    disabled={permissionChecking}
+                  >
+                    <Navigation size={13} />
+                    {permissionChecking
+                      ? (i18n.language === 'am' ? 'በመፈለግ...' : 'Finding...')
+                      : (i18n.language === 'am' ? 'ጂፒኤስ (GPS)' : 'Use GPS')}
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-secondary btn-sm"
+                    style={{ height: 32, fontSize: '0.78rem', padding: '0 10px' }}
+                    onClick={() => {
+                      setShowPermissionPrompt(false);
+                      setShowLocationPicker(true);
+                    }}
+                  >
+                    <MapPin size={13} />
+                    {i18n.language === 'am' ? 'በእጅ ምረጥ' : 'Manual'}
+                  </button>
+                  <button
+                    type="button"
+                    style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--color-text-muted)', padding: '4px' }}
+                    onClick={() => {
+                      setShowPermissionPrompt(false);
+                      localStorage.setItem('tt-location-mode', 'dismissed');
+                    }}
+                    aria-label="Dismiss"
+                  >
+                    <X size={15} />
+                  </button>
+                </div>
               </div>
             </div>
           )}
@@ -1234,6 +1214,7 @@ export default function MapPage() {
         onStartMapPick={() => {
           setIsPickingLocationOnMap(true);
         }}
+        onRequestDeviceGPS={() => requestGPSLocation(true)}
       />
     </div>
   );

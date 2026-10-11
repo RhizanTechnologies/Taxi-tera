@@ -90,22 +90,9 @@ export function TopNavbar({
     : [];
 
   return (
-    <header
-      style={{
-        height: 64,
-        background: 'var(--color-surface)',
-        borderBottom: '1px solid var(--color-border)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        padding: '0 20px',
-        position: 'relative',
-        zIndex: 1000,
-        boxShadow: '0 2px 12px rgba(20, 33, 61, 0.04)',
-      }}
-    >
+    <header className="urban-top-navbar">
       {/* ── Left: Brand Identity ────────────────────────────── */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+      <div className="top-navbar-brand-wrap">
         <BrandLogo size="md" />
       </div>
 
@@ -252,7 +239,7 @@ export function TopNavbar({
       </div>
 
       {/* ── Right: Action Buttons & Preferences ─────────────── */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+      <div className="top-nav-actions-wrap">
         {/* Quick Location Badge */}
         {onOpenLocationPicker && (
           <button
@@ -261,8 +248,8 @@ export function TopNavbar({
             style={{
               display: 'flex',
               alignItems: 'center',
-              gap: 6,
-              padding: '7px 12px',
+              gap: 5,
+              padding: '7px 10px',
               borderRadius: 10,
               background: 'var(--color-surface-secondary)',
               color: 'var(--color-text)',
@@ -276,16 +263,16 @@ export function TopNavbar({
             title={lang === 'am' ? 'ያለህበትን ቦታ ቀይር' : 'Change Location'}
           >
             <MapPin size={15} color="var(--color-primary)" />
-            <span style={{ maxWidth: 120, overflow: 'hidden', textOverflow: 'ellipsis' }}>
+            <span style={{ maxWidth: 100, overflow: 'hidden', textOverflow: 'ellipsis' }}>
               {locationName || (lang === 'am' ? 'መገኛዬ' : 'My Location')}
             </span>
           </button>
         )}
 
-        {/* Plan Trip Quick Trigger */}
+        {/* Plan Trip Quick Trigger (Desktop Only - Mobile has Bottom Nav) */}
         <button
           onClick={onOpenPlanner}
-          className="top-nav-plan-btn"
+          className="top-nav-plan-btn top-nav-desktop-only"
           style={{
             display: 'flex',
             alignItems: 'center',
@@ -306,10 +293,10 @@ export function TopNavbar({
           <span>{lang === 'am' ? 'ጉዞ አቅድ' : 'Plan Trip'}</span>
         </button>
 
-        {/* Add Station */}
+        {/* Add Station (Desktop Only - Mobile has Bottom Nav) */}
         <button
           onClick={onOpenAdd}
-          className="top-nav-add-btn"
+          className="top-nav-add-btn top-nav-desktop-only"
           style={{
             display: 'flex',
             alignItems: 'center',
@@ -329,13 +316,13 @@ export function TopNavbar({
           <span>{lang === 'am' ? 'ጣቢያ ጨምር' : 'Add Station'}</span>
         </button>
 
-        {/* Language Switch */}
+        {/* Language Switch (Visible on all devices) */}
         <button
           onClick={toggleLanguage}
           title="Toggle Language (Amharic / English)"
           style={{
-            width: 38,
-            height: 38,
+            width: 36,
+            height: 36,
             borderRadius: 10,
             border: '1px solid var(--color-border)',
             background: 'var(--color-surface-secondary)',
@@ -347,14 +334,16 @@ export function TopNavbar({
             fontWeight: 700,
             cursor: 'pointer',
             transition: 'all 0.15s ease',
+            flexShrink: 0,
           }}
         >
           {lang === 'am' ? 'EN' : 'አማ'}
         </button>
 
-        {/* Theme Toggle */}
+        {/* Theme Toggle (Desktop Only) */}
         <button
           onClick={toggleTheme}
+          className="top-nav-desktop-only"
           title="Toggle Dark/Light Mode"
           style={{
             width: 38,
@@ -373,9 +362,10 @@ export function TopNavbar({
           {theme === 'light' ? <Moon size={18} /> : <Sun size={18} color="#F2B705" />}
         </button>
 
-        {/* Profile / Account Action */}
+        {/* Profile / Account Action (Desktop Only - Mobile has Bottom Nav) */}
         <button
           onClick={onOpenProfile}
+          className="top-nav-desktop-only"
           title={user ? (profile?.display_name || user.email || 'Profile') : 'Sign In'}
           style={{
             width: 38,
