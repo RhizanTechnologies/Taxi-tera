@@ -16,6 +16,8 @@ interface TopNavbarProps {
   user: SupabaseUser | null;
   profile: Profile | null;
   onOpenProfile: () => void;
+  locationName?: string;
+  onOpenLocationPicker?: () => void;
 }
 
 export function TopNavbar({
@@ -28,6 +30,8 @@ export function TopNavbar({
   user,
   profile,
   onOpenProfile,
+  locationName,
+  onOpenLocationPicker,
 }: TopNavbarProps) {
   const { i18n } = useTranslation();
   const [query, setQuery] = useState('');
@@ -249,6 +253,35 @@ export function TopNavbar({
 
       {/* ── Right: Action Buttons & Preferences ─────────────── */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+        {/* Quick Location Badge */}
+        {onOpenLocationPicker && (
+          <button
+            onClick={onOpenLocationPicker}
+            className="top-nav-loc-btn"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 6,
+              padding: '7px 12px',
+              borderRadius: 10,
+              background: 'var(--color-surface-secondary)',
+              color: 'var(--color-text)',
+              border: '1px solid var(--color-border)',
+              fontSize: '0.82rem',
+              fontWeight: 600,
+              cursor: 'pointer',
+              transition: 'all 0.15s ease',
+              whiteSpace: 'nowrap',
+            }}
+            title={lang === 'am' ? 'ያለህበትን ቦታ ቀይር' : 'Change Location'}
+          >
+            <MapPin size={15} color="var(--color-primary)" />
+            <span style={{ maxWidth: 120, overflow: 'hidden', textOverflow: 'ellipsis' }}>
+              {locationName || (lang === 'am' ? 'መገኛዬ' : 'My Location')}
+            </span>
+          </button>
+        )}
+
         {/* Plan Trip Quick Trigger */}
         <button
           onClick={onOpenPlanner}

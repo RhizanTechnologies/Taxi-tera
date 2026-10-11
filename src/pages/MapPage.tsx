@@ -5,7 +5,7 @@ import 'leaflet/dist/leaflet.css';
 import 'leaflet-rotate';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Plus, Minus, Crosshair, Compass, X, Footprints } from 'lucide-react';
+import { Plus, Minus, Crosshair, Compass, X, Footprints, Navigation, MapPin } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import {
   pickName,
@@ -23,7 +23,7 @@ import { DesktopJourneyPlanner } from '../components/DesktopJourneyPlanner';
 import { StationDetailPanel } from '../components/StationDetailPanel';
 import { hydrateJourneyWithRealRoads } from '../lib/transitRouter';
 import { MapRotationBridge, type RotationController } from '../components/MapRotationControls';
-import { LocationPickerModal } from '../components/LocationPickerModal';
+import { LocationPickerModal, ADDIS_NEIGHBORHOODS } from '../components/LocationPickerModal';
 import { REAL_STATIONS, REAL_LINES } from '../data/realStationsData';
 import type { Station, Line, TransitJourney } from '../types';
 
@@ -220,6 +220,8 @@ export default function MapPage() {
   const [showLocationPicker, setShowLocationPicker] = useState(false);
   const [isPickingLocationOnMap, setIsPickingLocationOnMap] = useState(false);
   const [locationToast, setLocationToast] = useState('');
+  const [showPermissionPrompt, setShowPermissionPrompt] = useState(false);
+  const [permissionChecking, setPermissionChecking] = useState(false);
 
   // Navigation & panels
   const [activeTab, setActiveTab] = useState<'map' | 'planner' | 'saved' | 'contribute' | 'profile'>('map');
@@ -286,26 +288,124 @@ export default function MapPage() {
     localStorage.setItem('tt-user-pos', JSON.stringify(p));
   }, []);
 
-  // Load saved position or default to Addis Megenagna / Signal hub
+  // Compute readable name for the current location
+  const userLocationName = useMemo(() => {
+    if (!userPos) return '';
+    // Check if within 1000m of an Addis neighborhood
+    const closeNh = ADDIS_NEIGHBORHOODS.find(n =>
+      distanceMetres(userPos[0], userPos[1], n.coords[0], n.coords[1]) < 1000
+    );
+    if (closeNh) {
+      return i18n.language === 'am' ? closeNh.name_am : closeNh.name_en;
+    }
+    // Check closest station
+    if (stations.length > 0) {
+      let closest = stations[0];
+      let minDist = Infinity;
+      for (const s of stations) {
+        const d = distanceMetres(userPos[0], userPos[1], s.lat, s.lng);
+        if (d < minDist) { minDist = d; closest = s; }
+      }
+      if (minDist < 1200) {
+        return pickName(closest.name_am, closest.name_en, i18n.language);
+      }
+    }
+    return i18n.language === 'am' ? 'የአሁኑ መገኛ' : 'My Location';
+  }, [userPos, stations, i18n.language]);
+
+  // Request GPS Device Geolocation with graceful fallback
+  const requestGPSLocation = useCallback((isManualClick = true) => {
+    if (!navigator.geolocation) {
+      setLocError(i18n.language === 'am' ? 'በዚህ ብሮውዘር ላይ ጂፒኤስ አይደገፍም' : 'Geolocation is not supported by your browser');
+      setShowLocationPicker(true);
+      return;
+    }
+
+    setPermissionChecking(true);
+    setLocError('');
+
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        setPermissionChecking(false);
+        setShowPermissionPrompt(false);
+        const p: [number, number] = [pos.coords.latitude, pos.coords.longitude];
+
+        updateUserLocation(p);
+        localStorage.setItem('tt-location-mode', 'auto');
+        setFlyTo({ pos: p, zoom: 16.5 });
+
+        const inEthiopia = p[0] >= 3.4 && p[0] <= 15.0 && p[1] >= 33.0 && p[1] <= 48.0;
+        if (inEthiopia) {
+          setLocationToast(i18n.language === 'am' ? 'መገኛህ በጂፒኤስ ተገኝቷል! 📍' : 'Location detected via GPS! 📍');
+        } else {
+          setLocationToast(i18n.language === 'am' ? 'ጂፒኤስ ተገኝቷል 📍' : 'GPS Location detected 📍');
+        }
+        setTimeout(() => setLocationToast(''), 4500);
+      },
+      () => {
+        setPermissionChecking(false);
+        setShowPermissionPrompt(false);
+
+        if (isManualClick) {
+          setShowLocationPicker(true);
+          setLocError(
+            i18n.language === 'am'
+              ? 'የመሣሪያ ጂፒኤስ አልተገኘም (በኮምፒውተር ላይ ጂፒኤስ የለም)። እባክዎ ሰፈርዎን ወይም ካርታውን በእጅ ይምረጡ!'
+              : 'Device GPS unavailable (PCs lack GPS chips). Please pick your neighborhood or click on the map!'
+          );
+        }
+      },
+      { enableHighAccuracy: true, timeout: 9000, maximumAge: 0 }
+    );
+  }, [i18n.language, updateUserLocation]);
+
+  // Initial location load & permission query
   useEffect(() => {
-    try {
-      const saved = localStorage.getItem('tt-user-pos');
-      if (saved) {
+    const saved = localStorage.getItem('tt-user-pos');
+    const savedMode = localStorage.getItem('tt-location-mode'); // 'auto' | 'manual' | 'dismissed'
+
+    if (saved) {
+      try {
         const p = JSON.parse(saved);
         if (Array.isArray(p) && p.length === 2 && typeof p[0] === 'number') {
           setUserPos([p[0], p[1]]);
-          return;
+          if (savedMode === 'manual') {
+            return; // User explicitly selected manual location; keep it and don't prompt
+          }
         }
-      }
-    } catch {}
+      } catch {}
+    } else {
+      // Default to Megenagna / Signal hub
+      setUserPos([ADDIS.lat, ADDIS.lng]);
+    }
 
-    // Default to Megenagna / Signal hub
-    const defaultPos: [number, number] = [ADDIS.lat, ADDIS.lng];
-    setUserPos(defaultPos);
-    try {
-      localStorage.setItem('tt-user-pos', JSON.stringify(defaultPos));
-    } catch {}
-  }, []);
+    // If permission has never been decided and geolocation is available
+    if (navigator.geolocation && savedMode !== 'manual' && savedMode !== 'dismissed') {
+      if (navigator.permissions && navigator.permissions.query) {
+        navigator.permissions
+          .query({ name: 'geolocation' })
+          .then((status) => {
+            if (status.state === 'granted') {
+              requestGPSLocation(false);
+            } else if (status.state === 'prompt') {
+              setShowPermissionPrompt(true);
+            }
+
+            status.onchange = () => {
+              if (status.state === 'granted') {
+                requestGPSLocation(false);
+                setShowPermissionPrompt(false);
+              }
+            };
+          })
+          .catch(() => {
+            if (!saved) setShowPermissionPrompt(true);
+          });
+      } else {
+        if (!saved) setShowPermissionPrompt(true);
+      }
+    }
+  }, [requestGPSLocation]);
 
   // Center on transit journey when chosen
   useEffect(() => {
@@ -496,6 +596,8 @@ export default function MapPage() {
         user={user}
         profile={profile}
         onOpenProfile={() => setShowProfile(true)}
+        locationName={userLocationName}
+        onOpenLocationPicker={() => setShowLocationPicker(true)}
       />
 
       {/* ── 2. Split Workspace Layout (Urban Intelligence) ───── */}
@@ -618,7 +720,96 @@ export default function MapPage() {
             </div>
           )}
 
-          {/* Smart Location Helper Pill (Desktop Geolocation Fallback) */}
+          {/* Permission Request Card (Ask Location & Figure Out) */}
+          {showPermissionPrompt && (
+            <div
+              style={{
+                position: 'absolute',
+                top: 60,
+                left: 16,
+                right: 16,
+                maxWidth: 480,
+                margin: '0 auto',
+                zIndex: 860,
+                background: 'var(--color-surface)',
+                borderRadius: 16,
+                border: '1.5px solid var(--color-primary)',
+                boxShadow: '0 12px 32px rgba(16, 42, 67, 0.22)',
+                padding: '16px 18px',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 12,
+                animation: 'slideDown 0.25s cubic-bezier(0.16, 1, 0.3, 1)',
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
+                <div
+                  style={{
+                    width: 38,
+                    height: 38,
+                    borderRadius: '50%',
+                    background: 'rgba(8, 126, 139, 0.12)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: 'var(--color-primary)',
+                    flexShrink: 0,
+                  }}
+                >
+                  <Navigation size={20} />
+                </div>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontWeight: 800, fontSize: '0.94rem', color: 'var(--color-text)', marginBottom: 3 }}>
+                    {i18n.language === 'am' ? 'ያለህበትን ቦታ እንወቅ?' : 'Allow Location Access?'}
+                  </div>
+                  <div style={{ fontSize: '0.78rem', color: 'var(--color-text-muted)', lineHeight: 1.4 }}>
+                    {i18n.language === 'am'
+                      ? 'ታክሲ ተራ በአቅራቢያህ ያሉ የታክሲ ተራዎችን፣ የታሪፍ መረጃዎችን እና የእግር ጉዞዎችን ለማሳየት መገኛህን ይጠቀማል።'
+                      : 'Taxi Tera uses your location to show nearby taxi teras, live walking paths, and accurate fares.'}
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--color-text-muted)', padding: 4 }}
+                  onClick={() => {
+                    setShowPermissionPrompt(false);
+                    localStorage.setItem('tt-location-mode', 'dismissed');
+                  }}
+                  aria-label="Dismiss"
+                >
+                  <X size={16} />
+                </button>
+              </div>
+
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, justifyContent: 'flex-end', flexWrap: 'wrap' }}>
+                <button
+                  type="button"
+                  className="btn btn-secondary btn-sm"
+                  style={{ height: 32, fontSize: '0.78rem', padding: '0 12px', gap: 6 }}
+                  onClick={() => {
+                    setShowPermissionPrompt(false);
+                    setShowLocationPicker(true);
+                  }}
+                >
+                  <MapPin size={13} />
+                  {i18n.language === 'am' ? 'በእጅ ምረጥ (Manual)' : 'Set Manually'}
+                </button>
+
+                <button
+                  type="button"
+                  className="btn btn-primary btn-sm"
+                  style={{ height: 32, fontSize: '0.78rem', padding: '0 14px', gap: 6 }}
+                  onClick={() => requestGPSLocation(true)}
+                  disabled={permissionChecking}
+                >
+                  <Navigation size={13} />
+                  {permissionChecking
+                    ? (i18n.language === 'am' ? 'በመፈለግ ላይ...' : 'Finding...')
+                    : (i18n.language === 'am' ? 'ቦታዬን ፍቀድ (Use GPS)' : 'Allow GPS Location')}
+                </button>
+              </div>
+            </div>
+          )}
           {locError && (
             <div
               className="location-helper-pill"
@@ -765,6 +956,7 @@ export default function MapPage() {
               isPicking={isPickingLocationOnMap}
               onPick={(coords) => {
                 updateUserLocation(coords);
+                localStorage.setItem('tt-location-mode', 'manual');
                 setIsPickingLocationOnMap(false);
                 setFlyTo({ pos: coords, zoom: 16.5 });
                 setLocationToast(i18n.language === 'am' ? 'መገኛህ ተስተካክሏል! 📍' : 'Location updated on map! 📍');
@@ -870,9 +1062,9 @@ export default function MapPage() {
             <button
               type="button"
               className="urban-map-control-btn"
-              onClick={() => setShowLocationPicker(true)}
-              title={i18n.language === 'am' ? 'ቦታዬን አስተካክል' : 'Set / Correct My Location'}
-              aria-label="Set / Correct My Location"
+              onClick={() => requestGPSLocation(true)}
+              title={i18n.language === 'am' ? 'የአሁኑ መገኛዬን ፈልግ / ቀይር' : 'Find My Location / Change'}
+              aria-label="Find My Location"
             >
               <Crosshair size={19} color="var(--color-primary)" />
             </button>
@@ -1030,8 +1222,10 @@ export default function MapPage() {
         lines={lines}
         onSelectCoords={(coords, label) => {
           updateUserLocation(coords);
+          localStorage.setItem('tt-location-mode', 'manual');
           setFlyTo({ pos: coords, zoom: 16.5 });
           setLocError('');
+          setShowPermissionPrompt(false);
           if (label) {
             setLocationToast(i18n.language === 'am' ? `መገኛህ ወደ ${label} ተቀይሯል! 📍` : `Location set to ${label}! 📍`);
             setTimeout(() => setLocationToast(''), 4000);
