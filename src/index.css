@@ -1,0 +1,1199 @@
+/* ============================================================
+   TAXI TERA (ታክሲ ተራ) — "URBAN INTELLIGENCE" DESIGN SYSTEM
+   Addis Ababa Transit Navigation Platform
+   ============================================================ */
+
+/* ── Typography imports ─────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Ethiopic:wght@400;500;600;700&display=swap');
+
+/* ── Reset & Baseline ───────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  /* ── Vibrant Urban Mobility Color System (Light Mode) ───── */
+  --color-brand:               #14213D; /* Midnight Navy */
+  --color-primary:             #6554F0; /* Electric Indigo */
+  --color-primary-hover:       #805CFF; /* Vivid Violet */
+  --color-accent:              #F2B705; /* Golden Yellow */
+  --color-teal:                #087E8B; /* Ocean Teal */
+  --color-background:          #F8F9FC; /* Mist White */
+  --color-surface:             #FFFFFF; /* Pure White */
+  --color-surface-secondary:   #F0EDFF; /* Soft Lavender */
+  --color-subtle-highlight:    #E7F3FF; /* Pale Blue */
+  --color-text:                #20243A; /* Dark Text */
+  --color-text-secondary:      #747B93; /* Secondary Text */
+  --color-text-muted:          #9CA3AF; /* Muted Text */
+  --color-border:              #E5E7EB; /* Border */
+  --color-border-strong:       #D1D5DB; /* Strong Border */
+
+  /* Supporting Colors */
+  --color-success:             #22A06B; /* Fresh Green */
+  --color-success-bg:          #E8F5EC;
+  --color-warning:             #F2B705; /* Golden Yellow */
+  --color-warning-bg:          #FFF8E1;
+  --color-error:               #FF8066; /* Warm Coral */
+  --color-error-bg:            #FFE9EF; /* Soft Pink */
+  --color-info:                #49A7F5; /* Sky Blue */
+  --color-info-bg:             #E7F3FF;
+
+  /* Expressive Gradients */
+  --gradient-primary:          linear-gradient(135deg, #6554F0 0%, #805CFF 100%);
+  --gradient-deep:             linear-gradient(135deg, #14213D 0%, #263F68 100%);
+  --gradient-teal:             linear-gradient(135deg, #087E8B 0%, #16B5AD 100%);
+  --gradient-accent:           linear-gradient(135deg, #F2B705 0%, #FFD66B 100%);
+
+  /* ── Spacing & Shape Tokens ─────────────────────────────── */
+  --space-1:                   4px;
+  --space-2:                   8px;
+  --space-3:                   12px;
+  --space-4:                   16px;
+  --space-5:                   20px;
+  --space-6:                   24px;
+  --space-8:                   32px;
+  --space-10:                  40px;
+
+  --radius-control:            10px;
+  --radius-card:               14px;
+  --radius-panel:              18px;
+  --radius-full:               9999px;
+
+  --shadow-subtle:             0 2px 6px rgba(20, 33, 61, 0.05);
+  --shadow-floating:           0 8px 28px rgba(20, 33, 61, 0.12);
+  --shadow-selected:           0 6px 20px rgba(101, 84, 240, 0.22);
+  --shadow-sheet:              0 -8px 28px rgba(20, 33, 61, 0.10);
+
+  --transition-fast:           140ms cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-normal:         220ms cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Compatibility Aliases */
+  --clr-primary:               var(--color-primary);
+  --clr-primary-light:         var(--color-primary-hover);
+  --clr-primary-dark:          var(--color-brand);
+  --clr-accent:                var(--color-accent);
+  --clr-ink:                   var(--color-text);
+  --clr-ink-muted:             var(--color-text-muted);
+  --clr-soft:                  var(--color-surface-secondary);
+  --clr-soft2:                 var(--color-background);
+  --clr-surface:               var(--color-surface);
+  --clr-border:                var(--color-border);
+  --clr-success:               var(--color-success);
+  --clr-danger:                var(--color-error);
+  --radius:                    var(--radius-card);
+  --radius-sm:                 var(--radius-control);
+  --radius-lg:                 var(--radius-panel);
+  --shadow-card:               var(--shadow-floating);
+}
+
+/* ── Dark Mode ──────────────────────────────────────────── */
+[data-theme="dark"] {
+  --color-background:          #0B132B;
+  --color-surface:             #14213D;
+  --color-surface-secondary:   #1E2C4A;
+  --color-subtle-highlight:    #1F2F52;
+  --color-text:                #F8F9FC;
+  --color-text-secondary:      #B3BDD1;
+  --color-text-muted:          #747B93;
+  --color-border:              #28385E;
+  --color-border-strong:       #374B7A;
+
+  --color-brand:               #F8F9FC;
+  --color-primary:             #805CFF;
+  --color-primary-hover:       #9678FF;
+  --color-accent:              #F2B705;
+  --color-teal:                #16B5AD;
+
+  --color-success:             #34D399;
+  --color-success-bg:          rgba(52, 211, 153, 0.12);
+  --color-warning:             #FBBF24;
+  --color-warning-bg:          rgba(251, 191, 36, 0.12);
+  --color-error:               #F87171;
+  --color-error-bg:            rgba(248, 113, 113, 0.12);
+  --color-info:                #60A5FA;
+  --color-info-bg:             rgba(96, 165, 250, 0.12);
+
+  --shadow-floating:           0 12px 32px rgba(0, 0, 0, 0.45);
+  --shadow-selected:           0 4px 16px rgba(32, 160, 165, 0.25);
+  --shadow-sheet:              0 -10px 30px rgba(0, 0, 0, 0.50);
+
+  /* Update compatibility aliases */
+  --clr-primary:               var(--color-primary);
+  --clr-primary-light:         #38B2B7;
+  --clr-primary-dark:          #162E3B;
+  --clr-ink:                   var(--color-text);
+  --clr-ink-muted:             var(--color-text-muted);
+  --clr-soft:                  var(--color-surface-secondary);
+  --clr-soft2:                 var(--color-background);
+  --clr-surface:               var(--color-surface);
+  --clr-border:                var(--color-border);
+}
+
+/* ── Typography & Global Elements ───────────────────────── */
+html, body {
+  height: 100%;
+  font-family: 'Inter', 'Noto Sans Ethiopic', system-ui, -apple-system, sans-serif;
+  font-size: 14.5px;
+  line-height: 1.5;
+  color: var(--color-text);
+  background-color: var(--color-background);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow: hidden;
+}
+
+#root {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+h1, h2, h3, h4 {
+  color: var(--color-text);
+  font-family: 'Inter', 'Noto Sans Ethiopic', sans-serif;
+  letter-spacing: -0.02em;
+}
+h1 { font-size: 1.65rem; font-weight: 750; line-height: 1.25; }
+h2 { font-size: 1.35rem; font-weight: 700; line-height: 1.3; }
+h3 { font-size: 1.10rem; font-weight: 650; line-height: 1.35; }
+h4 { font-size: 0.95rem; font-weight: 600; line-height: 1.4; }
+
+p, li { line-height: 1.55; }
+a { color: var(--color-primary); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ── Curated Map Tile Styling (Urban Intelligence) ──────── */
+.leaflet-tile-pane {
+  filter: saturate(0.85) contrast(1.02);
+  transition: filter var(--transition-normal);
+}
+
+[data-theme="dark"] .leaflet-tile-pane {
+  filter: brightness(0.68) invert(1) contrast(1.15) hue-rotate(185deg) saturate(0.55);
+}
+
+/* ── Standard Button System ─────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 40px;
+  min-height: 40px;
+  padding: 0 16px;
+  border-radius: var(--radius-control);
+  font-family: inherit;
+  font-size: 0.88rem;
+  font-weight: 600;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background-color var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
+  text-decoration: none;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.btn-primary {
+  background: var(--gradient-primary);
+  color: #FFFFFF;
+  border: none;
+  box-shadow: 0 4px 14px rgba(101, 84, 240, 0.28);
+}
+.btn-primary:hover {
+  box-shadow: 0 6px 20px rgba(101, 84, 240, 0.38);
+  transform: translateY(-1.5px);
+}
+.btn-primary:active {
+  transform: scale(0.98);
+  box-shadow: 0 2px 8px rgba(101, 84, 240, 0.22);
+}
+
+.btn-secondary {
+  background-color: var(--color-surface-secondary);
+  color: var(--color-text);
+  border-color: var(--color-border);
+}
+.btn-secondary:hover {
+  background-color: var(--color-surface);
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(101, 84, 240, 0.12);
+}
+.btn-secondary:active {
+  transform: scale(0.98);
+}
+
+.btn-ghost {
+  background-color: transparent;
+  color: var(--color-text-secondary);
+  border-color: transparent;
+}
+.btn-ghost:hover {
+  background-color: var(--color-surface-secondary);
+  color: var(--color-text);
+}
+
+.btn-danger {
+  background-color: var(--color-error);
+  color: #FFFFFF;
+}
+.btn-danger:hover {
+  opacity: 0.9;
+}
+
+.btn-sm {
+  height: 32px;
+  min-height: 32px;
+  padding: 0 12px;
+  font-size: 0.80rem;
+}
+
+.btn-lg {
+  height: 46px;
+  min-height: 46px;
+  padding: 0 20px;
+  font-size: 0.95rem;
+}
+
+.btn-full {
+  width: 100%;
+}
+
+/* ── Top Header Navigation Bar (Section 6) ──────────────── */
+.urban-top-nav {
+  height: 64px;
+  min-height: 64px;
+  background-color: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  z-index: 900;
+  position: relative;
+  box-shadow: var(--shadow-subtle);
+}
+
+.urban-top-nav-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-shrink: 0;
+}
+
+.urban-top-nav-center {
+  flex: 1;
+  max-width: 480px;
+  margin: 0 20px;
+  position: relative;
+}
+
+.urban-top-nav-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+/* ── Search Omnibar in Header ───────────────────────────── */
+.urban-search-box {
+  position: relative;
+  width: 100%;
+}
+
+.urban-search-input-wrap {
+  display: flex;
+  align-items: center;
+  height: 40px;
+  background-color: var(--color-surface-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-control);
+  padding: 0 12px;
+  gap: 8px;
+  transition: border-color var(--transition-fast), background-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.urban-search-input-wrap:focus-within {
+  background-color: var(--color-surface);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(8, 126, 139, 0.12);
+}
+
+.urban-search-input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  color: var(--color-text);
+  font-family: inherit;
+  font-size: 0.88rem;
+  font-weight: 500;
+  outline: none;
+}
+.urban-search-input::placeholder {
+  color: var(--color-text-muted);
+}
+
+.urban-search-dropdown {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-floating);
+  max-height: 380px;
+  overflow-y: auto;
+  z-index: 1050;
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.urban-search-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border-radius: var(--radius-control);
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  width: 100%;
+  text-align: left;
+  transition: background-color var(--transition-fast);
+}
+.urban-search-item:hover, .urban-search-item:focus {
+  background-color: var(--color-surface-secondary);
+}
+
+/* ── Main App Layout Split (Desktop vs Mobile) ──────────── */
+.urban-app-layout {
+  flex: 1;
+  position: relative;
+  display: flex;
+  overflow: hidden;
+  height: calc(100% - 64px);
+}
+
+/* Left Desktop Sidebar / Journey Planner Panel */
+.urban-desktop-sidebar {
+  width: 380px;
+  max-width: 400px;
+  min-width: 340px;
+  height: 100%;
+  background-color: var(--color-surface);
+  border-right: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  z-index: 850;
+  overflow-y: auto;
+  transition: transform var(--transition-normal);
+  box-shadow: 2px 0 12px rgba(16, 42, 67, 0.04);
+}
+
+@media (max-width: 768px) {
+  .urban-desktop-sidebar {
+    display: none; /* On mobile, uses bottom sheets */
+  }
+  .urban-top-nav-center {
+    display: none; /* Mobile search is accessible on map or bottom sheet */
+  }
+}
+
+/* Map Canvas Viewport Container */
+.urban-map-viewport {
+  flex: 1;
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+/* ── Leaflet Controls Stack ─────────────────────────────── */
+.urban-map-controls-stack {
+  position: absolute;
+  right: 16px;
+  bottom: 84px; /* Above mobile dock, comfortable on desktop */
+  z-index: 800;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+@media (min-width: 769px) {
+  .urban-map-controls-stack {
+    bottom: 24px;
+    right: 20px;
+  }
+}
+
+.urban-map-control-btn {
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius-control);
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-subtle);
+  cursor: pointer;
+  transition: background-color var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast);
+}
+.urban-map-control-btn:hover {
+  background-color: var(--color-surface-secondary);
+  border-color: var(--color-border-strong);
+}
+.urban-map-control-btn:active {
+  transform: scale(0.96);
+}
+
+/* ── Urban Markers Family (Section 6) ───────────────────── */
+/* 1. Default Station Marker: Clean Teal Circle, White Transport Glyphs, Thin White Border */
+.urban-marker-default {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  background-color: var(--color-primary);
+  border: 2px solid #FFFFFF;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(16, 42, 67, 0.22);
+  cursor: pointer;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+.urban-marker-default:hover {
+  transform: scale(1.12);
+  box-shadow: 0 4px 12px rgba(8, 126, 139, 0.35);
+}
+
+/* 2. Selected Station Marker: Larger Teal + Lime Outer Ring + Station Label */
+.urban-marker-selected-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transform: translateY(-8px);
+}
+.urban-marker-selected-pin {
+  width: 36px;
+  height: 36px;
+  background-color: var(--color-primary);
+  border: 3px solid var(--color-accent); /* Lime Accent Ring */
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(16, 42, 67, 0.35);
+}
+.urban-marker-selected-label {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-control);
+  padding: 4px 10px;
+  margin-bottom: 4px;
+  font-weight: 700;
+  font-size: 0.78rem;
+  color: var(--color-text);
+  box-shadow: var(--shadow-floating);
+  white-space: nowrap;
+}
+
+/* 3. User Geolocation Pin with Lime/Teal Radar Halo */
+.urban-user-pin-wrap {
+  width: 48px;
+  height: 48px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: grab;
+}
+.urban-user-pin-halo {
+  position: absolute;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: rgba(217, 245, 109, 0.35); /* Subtle Lime Halo */
+  border: 1px solid rgba(8, 126, 139, 0.3);
+}
+.urban-user-pin-center {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: var(--color-primary);
+  border: 2.5px solid #FFFFFF;
+  box-shadow: 0 2px 6px rgba(16, 42, 67, 0.35);
+  z-index: 2;
+}
+
+/* ── Journey Planner Components (Section 7) ─────────────── */
+.journey-planner-container {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.journey-planner-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.journey-planner-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.journey-fields-card {
+  background-color: var(--color-surface-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.journey-field-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-control);
+  padding: 8px 12px;
+  transition: border-color var(--transition-fast);
+}
+.journey-field-row:focus-within {
+  border-color: var(--color-primary);
+}
+
+.journey-field-input {
+  border: none;
+  background: transparent;
+  width: 100%;
+  font-family: inherit;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--color-text);
+  outline: none;
+}
+.journey-field-input::placeholder {
+  color: var(--color-text-muted);
+}
+
+.journey-swap-btn {
+  width: 28px;
+  height: 28px;
+  align-self: flex-end;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 50%;
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin: -6px 8px -6px 0;
+  box-shadow: var(--shadow-subtle);
+  transition: background-color var(--transition-fast);
+}
+.journey-swap-btn:hover {
+  background-color: var(--color-subtle-highlight);
+}
+
+/* Journey Option Result Cards */
+.journey-result-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  cursor: pointer;
+  transition: border-color var(--transition-fast), background-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+.journey-result-card:hover {
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-subtle);
+}
+.journey-result-card.selected {
+  background-color: var(--color-subtle-highlight);
+  border-color: var(--color-primary);
+  border-left: 4px solid var(--color-primary); /* Restrained Left Accent Border */
+}
+
+.journey-result-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.journey-type-badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-surface-secondary);
+  color: var(--color-text);
+}
+.journey-type-badge.direct {
+  background-color: rgba(8, 126, 139, 0.12);
+  color: var(--color-primary);
+}
+
+.journey-fare-amount {
+  font-size: 1.15rem;
+  font-weight: 750;
+  color: var(--color-brand);
+}
+
+.journey-details-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.82rem;
+  color: var(--color-text-secondary);
+}
+
+/* ── Station Details & Boarding Guidance (Section 8) ────── */
+.station-details-container {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.station-details-name {
+  font-size: 1.35rem;
+  font-weight: 750;
+  color: var(--color-text);
+}
+
+.station-landmark-box {
+  background-color: var(--color-surface-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-control);
+  padding: 10px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.station-landmark-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-muted);
+}
+.station-landmark-text {
+  font-size: 0.90rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.fare-table-wrap {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-control);
+  overflow: hidden;
+  background-color: var(--color-surface);
+}
+
+.fare-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--color-border);
+}
+.fare-row:last-child {
+  border-bottom: none;
+}
+.fare-destination {
+  font-size: 0.90rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+.fare-amount {
+  font-size: 0.95rem;
+  font-weight: 750;
+  color: var(--color-primary);
+}
+
+.verification-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+}
+.verification-badge.verified {
+  background-color: var(--color-success-bg);
+  color: var(--color-success);
+}
+.verification-badge.outdated {
+  background-color: var(--color-warning-bg);
+  color: var(--color-warning);
+}
+
+/* ── Mobile Bottom Navigation Bar (Section 12) ──────────── */
+.urban-mobile-nav {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background-color: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+  z-index: 950;
+  align-items: center;
+  justify-content: space-around;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  box-shadow: var(--shadow-sheet);
+}
+
+@media (max-width: 768px) {
+  .urban-mobile-nav {
+    display: flex;
+  }
+}
+
+.urban-mobile-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  background: transparent;
+  border: none;
+  color: var(--color-text-secondary);
+  font-size: 0.70rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 6px 12px;
+  transition: color var(--transition-fast);
+}
+.urban-mobile-nav-item.active {
+  color: var(--color-primary);
+}
+.urban-mobile-nav-indicator {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background-color: var(--color-primary);
+  margin-top: 2px;
+}
+
+/* ── Responsive Polish & Micro-interactions ─────────────── */
+.location-helper-pill {
+  border-radius: var(--radius-card);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-floating);
+}
+
+/* Category Filter Chips Bar */
+.urban-chips-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 6px 12px;
+  scrollbar-width: none;
+}
+.urban-chips-bar::-webkit-scrollbar {
+  display: none;
+}
+
+.urban-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 12px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  font-size: 0.80rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all var(--transition-fast);
+}
+.urban-chip:hover {
+  background-color: var(--color-surface-secondary);
+}
+.urban-chip.active {
+  background-color: var(--color-brand);
+  color: #FFFFFF;
+  border-color: var(--color-brand);
+}
+
+/* ── BottomSheet Overlay & Sheet ────────────────────────── */
+.bottom-sheet-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(16, 42, 67, 0.45);
+  backdrop-filter: blur(2px);
+  z-index: 1000;
+  animation: fadeIn 180ms ease;
+}
+.bottom-sheet {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  max-width: 600px;
+  margin: 0 auto;
+  max-height: 85vh;
+  background-color: var(--color-surface);
+  border-top-left-radius: var(--radius-panel);
+  border-top-right-radius: var(--radius-panel);
+  border: 1px solid var(--color-border);
+  border-bottom: none;
+  box-shadow: var(--shadow-sheet);
+  z-index: 1001;
+  display: flex;
+  flex-direction: column;
+  animation: slideUp 220ms cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+.bottom-sheet-handle {
+  width: 36px;
+  height: 4px;
+  background-color: var(--color-border-strong);
+  border-radius: var(--radius-full);
+  margin: 10px auto 4px auto;
+  flex-shrink: 0;
+}
+.bottom-sheet-inner {
+  padding: 16px 20px 24px 20px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ── Toast Notifications ────────────────────────────────── */
+.toast-container {
+  position: fixed;
+  top: 76px;
+  right: 20px;
+  z-index: 1200;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  pointer-events: none;
+}
+.toast {
+  padding: 10px 16px;
+  border-radius: var(--radius-control);
+  background-color: var(--color-brand);
+  color: #FFFFFF;
+  font-size: 0.86rem;
+  font-weight: 600;
+  box-shadow: var(--shadow-floating);
+  pointer-events: auto;
+  animation: fadeIn 180ms ease;
+}
+.toast.success { background-color: var(--color-success); }
+.toast.danger { background-color: var(--color-error); }
+
+/* ── Spinner ────────────────────────────────────────────── */
+.spinner {
+  width: 24px;
+  height: 24px;
+  border: 2.5px solid var(--color-border);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: spin 700ms linear infinite;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+.spinner-overlay {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+
+/* ── Card & Surfaces ────────────────────────────────────── */
+.card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  padding: 16px;
+  box-shadow: var(--shadow-subtle);
+}
+
+/* ── Form Fields (Urban Intelligence) ───────────────────── */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.field-label {
+  font-size: 0.82rem;
+  font-weight: 650;
+  color: var(--color-text);
+}
+.input, .textarea, select {
+  height: 42px;
+  border-radius: var(--radius-control);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  padding: 0 14px;
+  font-family: inherit;
+  font-size: 0.88rem;
+  color: var(--color-text);
+  outline: none;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+.textarea {
+  height: auto;
+  min-height: 84px;
+  padding: 10px 14px;
+}
+.input:focus, .textarea:focus, select:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(8, 126, 139, 0.12);
+}
+.input.has-error {
+  border-color: var(--color-error);
+}
+.field-hint {
+  font-size: 0.76rem;
+  color: var(--color-text-muted);
+}
+.field-error {
+  font-size: 0.76rem;
+  color: var(--color-error);
+  font-weight: 600;
+}
+
+/* ── StationPage Layout (Section 8) ─────────────────────── */
+.station-page {
+  max-width: 680px;
+  margin: 0 auto;
+  min-height: 100%;
+  background-color: var(--color-surface);
+  display: flex;
+  flex-direction: column;
+}
+.station-page-hero {
+  position: relative;
+  height: 220px;
+  background-color: var(--color-surface-secondary);
+  overflow: hidden;
+}
+.station-page-back {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  cursor: pointer;
+  box-shadow: var(--shadow-subtle);
+  z-index: 10;
+}
+.station-page-body {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.line-list-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--color-border);
+}
+.line-list-row:last-child {
+  border-bottom: none;
+}
+.line-dest {
+  font-size: 0.95rem;
+  font-weight: 650;
+  color: var(--color-text);
+}
+.line-fare {
+  font-size: 1.1rem;
+  font-weight: 750;
+  color: var(--color-primary);
+}
+.line-return-btn {
+  background: none;
+  border: none;
+  color: var(--color-primary);
+  font-size: 0.76rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 2px 0;
+}
+.verified-label {
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+}
+.verified-label.old {
+  color: var(--color-warning);
+}
+
+/* ── Stepper Component in AddPage (Section 10) ─────────── */
+.step-progress {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+.step-dot {
+  flex: 1;
+  height: 4px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-border);
+  transition: background-color var(--transition-fast);
+}
+.step-dot.done {
+  background-color: var(--color-primary);
+}
+.step-dot.active {
+  background-color: var(--color-brand);
+}
+
+/* ── Duplicate Warning Alert ────────────────────────────── */
+.duplicate-warn {
+  background-color: var(--color-warning-bg);
+  border: 1px solid rgba(161, 92, 7, 0.25);
+  border-radius: var(--radius-card);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.duplicate-warn-text {
+  font-size: 0.86rem;
+  color: var(--color-warning);
+  font-weight: 600;
+}
+.duplicate-warn-actions {
+  display: flex;
+  gap: 10px;
+}
+
+/* ── Admin Dashboard Refinements (Section 11) ───────────── */
+.admin-page {
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.admin-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+  font-size: 0.74rem;
+  font-weight: 700;
+}
+
+/* ── Motion & Animation Design System ───────────────────── */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulseHalo {
+  0% {
+    transform: scale(0.92);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.18);
+    opacity: 0.35;
+  }
+  100% {
+    transform: scale(0.92);
+    opacity: 0.8;
+  }
+}
+
+@keyframes floatGently {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.urban-user-pin-halo {
+  animation: pulseHalo 2.4s ease-in-out infinite;
+}
+
+.interactive-card {
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal), border-color var(--transition-fast);
+}
+.interactive-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(101, 84, 240, 0.12);
+}
+
+.shimmer-loading {
+  background: linear-gradient(90deg, var(--color-surface-secondary) 25%, var(--color-surface) 50%, var(--color-surface-secondary) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.6s infinite;
+}
+
