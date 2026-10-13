@@ -16,7 +16,8 @@ function smoothRotate(map: L.Map, targetBearing: number, durationMs = 280) {
     return;
   }
 
-  const startBearing = anyMap.getBearing();
+  const rawStart = anyMap.getBearing();
+  const startBearing = (typeof rawStart === 'number' && Number.isFinite(rawStart)) ? rawStart : 0;
   let diff = ((targetBearing - startBearing) % 360 + 540) % 360 - 180;
   if (Math.abs(diff) < 0.5) {
     anyMap.setBearing(targetBearing);
@@ -60,8 +61,18 @@ export function MapRotationBridge({
   // Expose controller to parent
   useEffect(() => {
     const anyMap = map as unknown as { getBearing?: () => number; setBearing?: (b: number) => void };
+    const safeGetBearing = () => {
+      if (typeof anyMap.getBearing === 'function') {
+        const raw = anyMap.getBearing();
+        if (typeof raw === 'number' && Number.isFinite(raw)) {
+          return (raw % 360 + 360) % 360;
+        }
+      }
+      return 0;
+    };
+
     const controller: RotationController = {
-      getBearing: () => (anyMap.getBearing ? (anyMap.getBearing() % 360 + 360) % 360 : 0),
+      getBearing: safeGetBearing,
       setBearing: (deg: number, smooth = true) => {
         const norm = (deg % 360 + 360) % 360;
         if (smooth) {
@@ -71,7 +82,7 @@ export function MapRotationBridge({
         }
       },
       rotateBy: (delta: number) => {
-        const current = anyMap.getBearing ? (anyMap.getBearing() % 360 + 360) % 360 : 0;
+        const current = safeGetBearing();
         smoothRotate(map, (current + delta + 360) % 360);
       },
       resetNorth: () => {
@@ -87,9 +98,14 @@ export function MapRotationBridge({
     const anyMap = map as unknown as { getBearing?: () => number; setBearing?: (b: number) => void };
     const handleRotate = () => {
       if (typeof anyMap.getBearing === 'function') {
-        const b = (Math.round(anyMap.getBearing()) % 360 + 360) % 360;
-        onBearingChange(b);
+        const raw = anyMap.getBearing();
+        if (typeof raw === 'number' && Number.isFinite(raw)) {
+          const b = (Math.round(raw) % 360 + 360) % 360;
+          onBearingChange(b);
+          return;
+        }
       }
+      onBearingChange(0);
     };
 
     map.on('rotate', handleRotate);

@@ -943,6 +943,7 @@ export default function MapPage() {
             zoom={14}
             style={{ width: '100%', height: '100%' }}
             zoomControl={false}
+            {...({ rotate: true, touchRotate: true } as Record<string, unknown>)}
           >
             {/* OpenStreetMap Curated Low-Saturation Tiles with ODbL & map.et attribution */}
             <TileLayer
@@ -1042,17 +1043,29 @@ export default function MapPage() {
 
           {/* Grouped Map Controls Stack (Section 6) */}
           <div className="urban-map-controls-stack">
-            {mapBearing !== 0 && (
+            {Boolean(Number.isFinite(mapBearing) && Math.abs(mapBearing) > 1) && (
               <button
                 type="button"
                 className="urban-map-control-btn"
-                onClick={() => rotationController?.setBearing(0)}
-                title="Reset orientation"
+                onClick={() => {
+                  rotationController?.setBearing(0);
+                  setMapBearing(0);
+                }}
+                title={i18n.language === 'am' ? 'ሰሜንን አስተካክል (0°)' : 'Reset North orientation'}
                 aria-label="Reset North orientation"
               >
                 <Compass size={19} color="var(--color-primary)" style={{ transform: `rotate(${-mapBearing}deg)` }} />
               </button>
             )}
+            <button
+              type="button"
+              className="urban-map-control-btn"
+              onClick={() => requestGPSLocation(true)}
+              title={i18n.language === 'am' ? 'የአሁኑ መገኛዬን ፈልግ / ቀይር' : 'Find My Location / Change'}
+              aria-label="Find My Location"
+            >
+              <Crosshair size={19} color="var(--color-primary)" />
+            </button>
             <button
               type="button"
               className="urban-map-control-btn"
@@ -1070,15 +1083,6 @@ export default function MapPage() {
               aria-label="Zoom Out"
             >
               <Minus size={19} />
-            </button>
-            <button
-              type="button"
-              className="urban-map-control-btn"
-              onClick={() => requestGPSLocation(true)}
-              title={i18n.language === 'am' ? 'የአሁኑ መገኛዬን ፈልግ / ቀይር' : 'Find My Location / Change'}
-              aria-label="Find My Location"
-            >
-              <Crosshair size={19} color="var(--color-primary)" />
             </button>
           </div>
         </main>
