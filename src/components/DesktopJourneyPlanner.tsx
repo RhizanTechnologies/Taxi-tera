@@ -10,6 +10,7 @@ import {
   Sparkles,
   AlertCircle,
   X,
+  Crosshair,
 } from 'lucide-react';
 import { pickName, distanceMetres, matchesStationBilingualSearch } from '../lib/utils';
 import { findTransitJourneys, hydrateJourneyWithRealRoads } from '../lib/transitRouter';
@@ -25,6 +26,8 @@ interface DesktopJourneyPlannerProps {
   initialDestinationStation?: Station | null;
   onClose?: () => void;
   onOpenLocationPicker?: () => void;
+  onRequestGPS?: () => void;
+  permissionChecking?: boolean;
 }
 
 export function DesktopJourneyPlanner({
@@ -37,6 +40,8 @@ export function DesktopJourneyPlanner({
   initialDestinationStation,
   onClose,
   onOpenLocationPicker,
+  onRequestGPS,
+  permissionChecking = false,
 }: DesktopJourneyPlannerProps) {
   // Origin and destination state
   const [originMode, setOriginMode] = useState<'current' | 'station'>('current');
@@ -283,23 +288,51 @@ export function DesktopJourneyPlanner({
                     </span>
                   </span>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexShrink: 0 }}>
-                    {onOpenLocationPicker && (
+                    {onRequestGPS && (
                       <button
                         type="button"
-                        onClick={onOpenLocationPicker}
+                        onClick={onRequestGPS}
+                        disabled={permissionChecking}
                         style={{
-                          background: 'rgba(8, 126, 139, 0.1)',
-                          border: 'none',
+                          background: 'rgba(8, 126, 139, 0.12)',
+                          border: '1px solid rgba(8, 126, 139, 0.25)',
                           fontSize: '0.73rem',
                           color: 'var(--color-primary)',
                           cursor: 'pointer',
                           fontWeight: 700,
                           padding: '3px 7px',
                           borderRadius: 6,
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 4,
                         }}
-                        title="Set exact location / neighborhood"
+                        title={lang === 'am' ? 'የአሁኑን መገኛ በጂፒኤስ ፈልግ' : 'Detect current GPS location'}
                       >
-                        {lang === 'am' ? 'ቦታ ቀይር' : 'Set GPS'}
+                        <Crosshair size={12} />
+                        <span>
+                          {permissionChecking
+                            ? (lang === 'am' ? 'በመፈለግ...' : 'Locating...')
+                            : (lang === 'am' ? 'ጂፒኤስ ፈልግ' : 'Detect GPS')}
+                        </span>
+                      </button>
+                    )}
+                    {onOpenLocationPicker && (
+                      <button
+                        type="button"
+                        onClick={onOpenLocationPicker}
+                        style={{
+                          background: 'var(--color-surface-secondary)',
+                          border: '1px solid var(--color-border)',
+                          fontSize: '0.73rem',
+                          color: 'var(--color-text)',
+                          cursor: 'pointer',
+                          fontWeight: 600,
+                          padding: '3px 7px',
+                          borderRadius: 6,
+                        }}
+                        title={lang === 'am' ? 'ሰፈር ምረጥ ወይም ካርታ ላይ ጠቁም' : 'Pick neighborhood or tap map'}
+                      >
+                        {lang === 'am' ? 'ቀይር' : 'Change'}
                       </button>
                     )}
                     <button

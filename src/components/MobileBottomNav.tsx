@@ -16,24 +16,7 @@ export function MobileBottomNav({ activeTab, onSelectTab, lang }: MobileBottomNa
   ];
 
   return (
-    <nav
-      className="mobile-bottom-nav"
-      style={{
-        position: 'fixed',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        height: 'calc(62px + env(safe-area-inset-bottom, 0px))',
-        paddingBottom: 'env(safe-area-inset-bottom, 0px)',
-        background: 'var(--color-surface)',
-        borderTop: '1px solid var(--color-border)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-around',
-        zIndex: 1000,
-        boxShadow: '0 -4px 18px rgba(20, 33, 61, 0.08)',
-      }}
-    >
+    <nav className="mobile-bottom-nav">
       {tabs.map((tab) => {
         const Icon = tab.icon;
         const isActive = activeTab === tab.id;

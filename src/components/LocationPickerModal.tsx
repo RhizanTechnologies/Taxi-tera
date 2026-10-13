@@ -193,7 +193,7 @@ export function LocationPickerModal({
             onClick={handleDeviceGPS}
           >
             <Crosshair size={15} color="var(--color-primary)" />
-            <span>{lang === 'am' ? 'የመሣሪያ ጂፒኤስ' : 'Device GPS'}</span>
+            <span>{lang === 'am' ? 'የመሣሪያ ጂፒኤስ ፈልግ' : 'Detect Device GPS'}</span>
           </button>
         </div>
 

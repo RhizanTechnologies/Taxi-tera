@@ -313,7 +313,7 @@ export default function MapPage() {
     return i18n.language === 'am' ? 'የአሁኑ መገኛ' : 'My Location';
   }, [userPos, stations, i18n.language]);
 
-  // Request GPS Device Geolocation with graceful fallback
+  // Request GPS Device Geolocation with robust high-accuracy and standard fallback
   const requestGPSLocation = useCallback((isManualClick = true) => {
     if (!navigator.geolocation) {
       setLocError(i18n.language === 'am' ? 'በዚህ ብሮውዘር ላይ ጂፒኤስ አይደገፍም' : 'Geolocation is not supported by your browser');
@@ -324,38 +324,68 @@ export default function MapPage() {
     setPermissionChecking(true);
     setLocError('');
 
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        setPermissionChecking(false);
-        setShowPermissionPrompt(false);
-        const p: [number, number] = [pos.coords.latitude, pos.coords.longitude];
+    const handleSuccess = (pos: GeolocationPosition) => {
+      setPermissionChecking(false);
+      setShowPermissionPrompt(false);
+      const p: [number, number] = [pos.coords.latitude, pos.coords.longitude];
 
-        updateUserLocation(p);
-        localStorage.setItem('tt-location-mode', 'auto');
-        setFlyTo({ pos: p, zoom: 16.5 });
+      updateUserLocation(p);
+      localStorage.setItem('tt-location-mode', 'auto');
+      setFlyTo({ pos: p, zoom: 16.5 });
 
-        const inEthiopia = p[0] >= 3.4 && p[0] <= 15.0 && p[1] >= 33.0 && p[1] <= 48.0;
-        if (inEthiopia) {
-          setLocationToast(i18n.language === 'am' ? 'መገኛህ በጂፒኤስ ተገኝቷል! 📍' : 'Location detected via GPS! 📍');
+      const inEthiopia = p[0] >= 3.4 && p[0] <= 15.0 && p[1] >= 33.0 && p[1] <= 48.0;
+      if (inEthiopia) {
+        setLocationToast(i18n.language === 'am' ? 'መገኛህ በጂፒኤስ ተገኝቷል! 📍' : 'Location detected via GPS! 📍');
+      } else {
+        setLocationToast(i18n.language === 'am' ? 'ጂፒኤስ ተገኝቷል 📍' : 'GPS Location detected 📍');
+      }
+      setTimeout(() => setLocationToast(''), 4500);
+    };
+
+    const handleFinalError = (err?: GeolocationPositionError) => {
+      setPermissionChecking(false);
+      setShowPermissionPrompt(false);
+
+      if (isManualClick) {
+        let errorMsg = '';
+        if (err?.code === 1) {
+          // PERMISSION_DENIED
+          errorMsg = i18n.language === 'am'
+            ? 'የቦታ ፈቃድ በብሮውዘርዎ ተከልክሏል። እባክዎ በአድራሻ ማስገቢያው አጠገብ (🔒) ፈቃድ ይስጡ ወይም ሰፈርዎን ከታች ይምረጡ።'
+            : 'Location access was denied in browser settings. Please click the lock icon (🔒) in your address bar to allow, or select your neighborhood below.';
+        } else if (err?.code === 3) {
+          // TIMEOUT
+          errorMsg = i18n.language === 'am'
+            ? 'የቦታ መፈለጊያ ጥያቄው ጊዜ አልቋል። እባክዎ ሰፈርዎን ወይም ካርታውን በእጅ ይምረጡ!'
+            : 'Location request timed out. Please select your neighborhood or click on the map!';
         } else {
-          setLocationToast(i18n.language === 'am' ? 'ጂፒኤስ ተገኝቷል 📍' : 'GPS Location detected 📍');
+          errorMsg = i18n.language === 'am'
+            ? 'የመሣሪያ ጂፒኤስ አልተገኘም። እባክዎ ሰፈርዎን ወይም ካርታውን በእጅ ይምረጡ!'
+            : 'Device location unavailable. Please pick your neighborhood or click on the map!';
         }
-        setTimeout(() => setLocationToast(''), 4500);
-      },
-      () => {
-        setPermissionChecking(false);
-        setShowPermissionPrompt(false);
 
-        if (isManualClick) {
-          setShowLocationPicker(true);
-          setLocError(
-            i18n.language === 'am'
-              ? 'የመሣሪያ ጂፒኤስ አልተገኘም (በኮምፒውተር ላይ ጂፒኤስ የለም)። እባክዎ ሰፈርዎን ወይም ካርታውን በእጅ ይምረጡ!'
-              : 'Device GPS unavailable (PCs lack GPS chips). Please pick your neighborhood or click on the map!'
-          );
+        setLocError(errorMsg);
+        setShowLocationPicker(true);
+      }
+    };
+
+    // Stage 1: Attempt high accuracy (hardware GPS on mobile)
+    navigator.geolocation.getCurrentPosition(
+      handleSuccess,
+      (err) => {
+        // If explicitly denied by user, do not retry
+        if (err.code === 1) {
+          handleFinalError(err);
+          return;
         }
+        // Stage 2: Automatic fallback to standard accuracy (Wi-Fi/IP location for laptops & desktops)
+        navigator.geolocation.getCurrentPosition(
+          handleSuccess,
+          (err2) => handleFinalError(err2),
+          { enableHighAccuracy: false, timeout: 12000, maximumAge: 60000 }
+        );
       },
-      { enableHighAccuracy: true, timeout: 9000, maximumAge: 0 }
+      { enableHighAccuracy: true, timeout: 6000, maximumAge: 30000 }
     );
   }, [i18n.language, updateUserLocation]);
 
@@ -628,6 +658,8 @@ export default function MapPage() {
               activeJourney={activeTransitJourney}
               initialDestinationStation={plannerTargetStation}
               onOpenLocationPicker={() => setShowLocationPicker(true)}
+              onRequestGPS={() => requestGPSLocation(true)}
+              permissionChecking={permissionChecking}
             />
           )}
         </aside>

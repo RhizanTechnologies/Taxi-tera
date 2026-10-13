@@ -271,7 +271,8 @@ a:hover { text-decoration: underline; }
   width: 100%;
 }
 
-/* ── Top Header Navigation Bar (Section 6) ──────────────── */
+/* ── Top Header Navigation Bar ──────────────────────────── */
+.urban-top-navbar,
 .urban-top-nav {
   height: 64px;
   min-height: 64px;
@@ -284,8 +285,10 @@ a:hover { text-decoration: underline; }
   z-index: 900;
   position: relative;
   box-shadow: var(--shadow-subtle);
+  width: 100%;
 }
 
+.top-navbar-brand-wrap,
 .urban-top-nav-left {
   display: flex;
   align-items: center;
@@ -293,18 +296,43 @@ a:hover { text-decoration: underline; }
   flex-shrink: 0;
 }
 
+.top-navbar-search-wrap,
 .urban-top-nav-center {
-  flex: 1;
+  flex: 0 1 480px;
   max-width: 480px;
   margin: 0 20px;
   position: relative;
 }
 
+.top-nav-actions-wrap,
 .urban-top-nav-right {
   display: flex;
   align-items: center;
   gap: 10px;
   flex-shrink: 0;
+}
+
+/* ── Mobile Bottom Navigation Bar ───────────────────────── */
+.mobile-bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: calc(62px + env(safe-area-inset-bottom, 0px));
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  background-color: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  z-index: 1000;
+  box-shadow: 0 -4px 18px rgba(20, 33, 61, 0.08);
+}
+
+@media (min-width: 769px) {
+  .mobile-bottom-nav {
+    display: none !important;
+  }
 }
 
 /* ── Search Omnibar in Header ───────────────────────────── */
