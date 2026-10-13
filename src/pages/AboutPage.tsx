@@ -8,7 +8,7 @@ export default function AboutPage() {
         <button className="btn btn-ghost" style={{ minWidth: 44, padding: '0 8px' }} onClick={() => navigate(-1)}>←</button>
         <span className="app-header-title">About Taxi Tera</span>
       </div>
-      <div style={{ padding: '20px 20px 40px', display: 'flex', flexDirection: 'column', gap: 20, maxWidth: 600 }}>
+      <div style={{ padding: '24px 20px 48px', display: 'flex', flexDirection: 'column', gap: 20, maxWidth: 680, margin: '0 auto', width: '100%' }}>
         <div className="card">
           <h2 style={{ marginBottom: 8 }}>What is Taxi Tera?</h2>
           <p className="text-sm" style={{ lineHeight: 1.65 }}>

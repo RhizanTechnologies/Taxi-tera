@@ -162,6 +162,9 @@ export function RoutePlannerSheet({
           display: 'flex',
           flexDirection: 'column',
           overflow: 'hidden',
+          maxWidth: 540,
+          margin: '0 auto',
+          width: '100%',
         }}
       >
         {/* Grab handle & Title header */}

@@ -91,10 +91,11 @@ export function TopNavbar({
 
   return (
     <header className="urban-top-navbar">
-      {/* ── Left: Brand Identity ────────────────────────────── */}
-      <div className="top-navbar-brand-wrap">
-        <BrandLogo size="md" />
-      </div>
+      <div className="urban-top-navbar-inner">
+        {/* ── Left: Brand Identity ────────────────────────────── */}
+        <div className="top-navbar-brand-wrap">
+          <BrandLogo size="md" />
+        </div>
 
       {/* ── Center: Search Omnibar ──────────────────────────── */}
       <div
@@ -390,6 +391,7 @@ export function TopNavbar({
           )}
         </button>
       </div>
-    </header>
-  );
+    </div>
+  </header>
+);
 }

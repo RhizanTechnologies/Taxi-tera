@@ -288,6 +288,16 @@ a:hover { text-decoration: underline; }
   width: 100%;
 }
 
+.urban-top-navbar-inner {
+  max-width: 1540px;
+  margin: 0 auto;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .top-navbar-brand-wrap,
 .urban-top-nav-left {
   display: flex;
@@ -467,26 +477,25 @@ a:hover { text-decoration: underline; }
 /* ── Location Permission Floating Banner ─────────────────── */
 .location-permission-banner {
   position: absolute;
-  top: 14px;
-  left: 16px;
-  right: 16px;
-  max-width: 480px;
-  margin: 0 auto;
+  bottom: 24px;
+  left: 20px;
+  max-width: 440px;
   z-index: 850;
   background-color: var(--color-surface);
   border-radius: var(--radius-card);
   border: 1.5px solid var(--color-primary);
   box-shadow: 0 8px 24px rgba(16, 42, 67, 0.16);
   padding: 10px 14px;
-  animation: slideDown 0.22s ease-out;
+  animation: slideUp 0.22s ease-out;
 }
 
 @media (max-width: 768px) {
   .location-permission-banner {
-    top: auto;
     bottom: 74px; /* Floating right above bottom nav */
     left: 10px;
     right: 10px;
+    max-width: 480px;
+    margin: 0 auto;
     padding: 8px 12px;
   }
 }
@@ -1043,6 +1052,53 @@ a:hover { text-decoration: underline; }
   border-radius: var(--radius-full);
   margin: 10px auto 4px auto;
   flex-shrink: 0;
+}
+
+@media (min-width: 769px) {
+  .bottom-sheet {
+    top: 50%;
+    bottom: auto;
+    left: 50%;
+    right: auto;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    max-width: 520px;
+    max-height: 85vh;
+    border-radius: 20px;
+    border: 1px solid var(--color-border);
+    box-shadow: 0 20px 60px rgba(16, 42, 67, 0.28);
+    animation: modalPop 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .bottom-sheet-handle {
+    display: none;
+  }
+  .mobile-only-bottom-sheet {
+    display: none !important;
+  }
+}
+
+@keyframes modalPop {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -46%) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+/* ── Form & Flow Pages Responsive Constraints ───────────── */
+.add-flow-wrap,
+.me-page {
+  max-width: 680px;
+  margin: 0 auto;
+  width: 100%;
+  min-height: 100vh;
+  background-color: var(--color-surface);
+  box-shadow: var(--shadow-subtle);
+  display: flex;
+  flex-direction: column;
 }
 .bottom-sheet-inner {
   padding: 16px 20px 24px 20px;
