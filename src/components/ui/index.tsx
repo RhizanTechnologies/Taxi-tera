@@ -36,9 +36,10 @@ interface BottomSheetProps {
   onClose: () => void;
   children: React.ReactNode;
   className?: string;
+  overlayClassName?: string;
 }
 
-export function BottomSheet({ open, onClose, children, className = '' }: BottomSheetProps) {
+export function BottomSheet({ open, onClose, children, className = '', overlayClassName = '' }: BottomSheetProps) {
   // Close on Escape
   useEffect(() => {
     if (!open) return;
@@ -50,7 +51,7 @@ export function BottomSheet({ open, onClose, children, className = '' }: BottomS
   if (!open) return null;
   return (
     <>
-      <div className="bottom-sheet-overlay" onClick={onClose} aria-hidden />
+      <div className={`bottom-sheet-overlay ${overlayClassName}`} onClick={onClose} aria-hidden />
       <div className={`bottom-sheet ${className}`} role="dialog" aria-modal>
         <div className="bottom-sheet-handle" aria-hidden />
         <div className="bottom-sheet-inner">{children}</div>

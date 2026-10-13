@@ -614,21 +614,21 @@ export function DesktopJourneyPlanner({
         disabled={!destinationStation || isSearching}
         style={{
           width: '100%',
-          padding: '12px 18px',
-          borderRadius: 12,
+          padding: '13px 20px',
+          borderRadius: 14,
           background: destinationStation
-            ? 'linear-gradient(135deg, #6554F0 0%, #805CFF 100%)'
+            ? 'var(--gradient-primary)'
             : 'var(--color-surface-secondary)',
           color: destinationStation ? '#FFFFFF' : 'var(--color-text-muted)',
           border: 'none',
-          fontSize: '0.95rem',
-          fontWeight: 700,
+          fontSize: '0.96rem',
+          fontWeight: 750,
           cursor: destinationStation ? 'pointer' : 'not-allowed',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           gap: 8,
-          boxShadow: destinationStation ? '0 4px 16px rgba(101, 84, 240, 0.35)' : 'none',
+          boxShadow: destinationStation ? '0 6px 20px rgba(79, 70, 229, 0.36)' : 'none',
           transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
           marginBottom: 20,
         }}
@@ -667,17 +667,18 @@ export function DesktopJourneyPlanner({
             <div
               key={j.id}
               onClick={() => onSelectJourney(j)}
+              className="interactive-card"
               style={{
-                borderRadius: 14,
+                borderRadius: 16,
                 border: isSelected ? '2px solid var(--color-primary)' : '1px solid var(--color-border)',
                 background: isSelected ? 'var(--color-surface-highlight)' : 'var(--color-surface)',
-                padding: '14px 16px',
+                padding: '16px',
                 cursor: 'pointer',
-                boxShadow: isSelected ? '0 4px 16px rgba(101, 84, 240, 0.15)' : '0 2px 8px rgba(0,0,0,0.03)',
+                boxShadow: isSelected ? '0 8px 24px -4px rgba(79, 70, 229, 0.24)' : '0 2px 8px rgba(15, 23, 42, 0.04)',
                 transition: 'all 0.18s cubic-bezier(0.16, 1, 0.3, 1)',
                 display: 'flex',
                 flexDirection: 'column',
-                gap: 10,
+                gap: 12,
               }}
             >
               {/* Badge & Fare Row */}
@@ -685,35 +686,47 @@ export function DesktopJourneyPlanner({
                 <span
                   style={{
                     fontSize: '0.72rem',
-                    fontWeight: 700,
+                    fontWeight: 750,
                     textTransform: 'uppercase',
                     letterSpacing: '0.06em',
-                    padding: '3px 8px',
+                    padding: '3px 9px',
                     borderRadius: 6,
-                    background: isDirect ? '#E8F5EC' : '#FFF4D9',
-                    color: isDirect ? '#18794E' : '#A15C07',
+                    background: isDirect ? 'rgba(16, 185, 129, 0.12)' : 'rgba(245, 158, 11, 0.12)',
+                    color: isDirect ? '#10B981' : '#F59E0B',
+                    border: `1px solid ${isDirect ? 'rgba(16, 185, 129, 0.25)' : 'rgba(245, 158, 11, 0.25)'}`,
                   }}
                 >
                   {isDirect ? (lang === 'am' ? 'ቀጥታ ታክሲ' : 'DIRECT TAXI') : (lang === 'am' ? '1 ዝውውር' : '1 TRANSFER')}
                 </span>
 
-                <div style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--color-primary)' }}>
-                  {j.totalFareBirr} birr
+                <div
+                  className="tabular-nums"
+                  style={{
+                    fontSize: '1.15rem',
+                    fontWeight: 800,
+                    color: 'var(--color-primary)',
+                    display: 'flex',
+                    alignItems: 'baseline',
+                    gap: 3,
+                  }}
+                >
+                  <span>{j.totalFareBirr}</span>
+                  <span style={{ fontSize: '0.78rem', fontWeight: 600, color: 'var(--color-text-secondary)' }}>birr</span>
                 </div>
               </div>
 
               {/* Title & Timing Row */}
               <div>
-                <div style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--color-text)' }}>
+                <div style={{ fontSize: '0.96rem', fontWeight: 750, color: 'var(--color-text)', letterSpacing: '-0.01em' }}>
                   {pickName(j.summaryTitle_am, j.summaryTitle_en, lang)}
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 4, fontSize: '0.8rem', color: 'var(--color-text-secondary)' }}>
-                  <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                    <Clock size={14} /> ~{j.totalDurationMinutes} min
+                <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginTop: 5, fontSize: '0.82rem', color: 'var(--color-text-secondary)' }}>
+                  <span style={{ display: 'flex', alignItems: 'center', gap: 5, fontWeight: 550 }}>
+                    <Clock size={14} color="var(--color-primary)" /> ~{j.totalDurationMinutes} min
                   </span>
                   {j.steps.some((s) => s.kind === 'walk_to_station') && (
-                    <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                      <Footprints size={14} /> Walk to station
+                    <span style={{ display: 'flex', alignItems: 'center', gap: 5, fontWeight: 550 }}>
+                      <Footprints size={14} color="#10B981" /> Walk to station
                     </span>
                   )}
                 </div>
@@ -725,7 +738,7 @@ export function DesktopJourneyPlanner({
                   display: 'flex',
                   alignItems: 'center',
                   gap: 6,
-                  paddingTop: 8,
+                  paddingTop: 10,
                   borderTop: '1px solid var(--color-border)',
                   fontSize: '0.78rem',
                   color: 'var(--color-text-secondary)',
@@ -734,7 +747,15 @@ export function DesktopJourneyPlanner({
                 {j.steps.map((st, i) => (
                   <Fragment key={i}>
                     {i > 0 && <span style={{ color: 'var(--color-text-muted)' }}>➔</span>}
-                    <span style={{ fontWeight: 600, color: st.kind === 'ride_taxi' ? 'var(--color-brand)' : 'var(--color-text-secondary)' }}>
+                    <span
+                      style={{
+                        fontWeight: 650,
+                        color: st.kind === 'ride_taxi' ? 'var(--color-brand)' : 'var(--color-text-secondary)',
+                        background: st.kind === 'ride_taxi' ? 'var(--color-surface-secondary)' : 'transparent',
+                        padding: st.kind === 'ride_taxi' ? '2px 6px' : '0',
+                        borderRadius: 4,
+                      }}
+                    >
                       {st.kind === 'ride_taxi' ? 'Minibus' : 'Walk'}
                     </span>
                   </Fragment>

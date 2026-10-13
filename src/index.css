@@ -1,10 +1,10 @@
 /* ============================================================
-   TAXI TERA (ታክሲ ተራ) — "URBAN INTELLIGENCE" DESIGN SYSTEM
-   Addis Ababa Transit Navigation Platform
+   TAXI TERA (ታክሲ ተራ) — "URBAN MOBILITY" DESIGN SYSTEM
+   Addis Ababa Transit Navigation Platform — Apple Maps / Citymapper Grade
    ============================================================ */
 
 /* ── Typography imports ─────────────────────────────────── */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Ethiopic:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+Ethiopic:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap');
 
 /* ── Reset & Baseline ───────────────────────────────────── */
 *, *::before, *::after {
@@ -14,37 +14,43 @@
 }
 
 :root {
-  /* ── Vibrant Urban Mobility Color System (Light Mode) ───── */
-  --color-brand:               #14213D; /* Midnight Navy */
-  --color-primary:             #6554F0; /* Electric Indigo */
-  --color-primary-hover:       #805CFF; /* Vivid Violet */
-  --color-accent:              #F2B705; /* Golden Yellow */
-  --color-teal:                #087E8B; /* Ocean Teal */
-  --color-background:          #F8F9FC; /* Mist White */
+  /* ── Premier Transit Color Architecture (Light Mode) ───────── */
+  --color-brand:               #0F172A; /* Deep Midnight Slate */
+  --color-primary:             #4F46E5; /* Vibrant Electric Indigo */
+  --color-primary-hover:       #4338CA; /* Deep Indigo */
+  --color-primary-glow:        rgba(79, 70, 229, 0.28);
+  --color-accent:              #F59E0B; /* Golden Amber (Taxi Birr) */
+  --color-accent-hover:        #D97706;
+  --color-teal:                #059669; /* Mobility Emerald */
+  --color-background:          #F8FAFC; /* Clean Slate Mist */
   --color-surface:             #FFFFFF; /* Pure White */
-  --color-surface-secondary:   #F0EDFF; /* Soft Lavender */
-  --color-subtle-highlight:    #E7F3FF; /* Pale Blue */
-  --color-text:                #20243A; /* Dark Text */
-  --color-text-secondary:      #747B93; /* Secondary Text */
-  --color-text-muted:          #9CA3AF; /* Muted Text */
-  --color-border:              #E5E7EB; /* Border */
-  --color-border-strong:       #D1D5DB; /* Strong Border */
+  --color-surface-secondary:   #F1F5F9; /* Subtle Cool Slate */
+  --color-surface-highlight:   #EEF2FF; /* Indigo Glow Wash */
+  --color-subtle-highlight:    #EEF2FF;
+  --color-surface-glass:       rgba(255, 255, 255, 0.85);
+  --color-glass-border:        rgba(226, 232, 240, 0.8);
+  --color-text:                #0F172A; /* High Contrast Ink */
+  --color-text-secondary:      #475569; /* Slate 600 */
+  --color-text-muted:          #94A3B8; /* Slate 400 */
+  --color-border:              #E2E8F0; /* Slate 200 */
+  --color-border-strong:       #CBD5E1; /* Slate 300 */
 
-  /* Supporting Colors */
-  --color-success:             #22A06B; /* Fresh Green */
-  --color-success-bg:          #E8F5EC;
-  --color-warning:             #F2B705; /* Golden Yellow */
-  --color-warning-bg:          #FFF8E1;
-  --color-error:               #FF8066; /* Warm Coral */
-  --color-error-bg:            #FFE9EF; /* Soft Pink */
-  --color-info:                #49A7F5; /* Sky Blue */
-  --color-info-bg:             #E7F3FF;
+  /* Supporting Transit Statuses */
+  --color-success:             #10B981; /* Live Emerald */
+  --color-success-bg:          #ECFDF5;
+  --color-warning:             #F59E0B; /* Amber */
+  --color-warning-bg:          #FFFBEB;
+  --color-error:               #EF4444; /* Rose / Coral */
+  --color-error-bg:            #FEF2F2;
+  --color-info:                #3B82F6; /* Sky Blue */
+  --color-info-bg:             #EFF6FF;
 
-  /* Expressive Gradients */
-  --gradient-primary:          linear-gradient(135deg, #6554F0 0%, #805CFF 100%);
-  --gradient-deep:             linear-gradient(135deg, #14213D 0%, #263F68 100%);
-  --gradient-teal:             linear-gradient(135deg, #087E8B 0%, #16B5AD 100%);
-  --gradient-accent:           linear-gradient(135deg, #F2B705 0%, #FFD66B 100%);
+  /* Modern Fluid Gradients */
+  --gradient-primary:          linear-gradient(135deg, #4F46E5 0%, #6366F1 50%, #818CF8 100%);
+  --gradient-accent:           linear-gradient(135deg, #F59E0B 0%, #FBBF24 100%);
+  --gradient-emerald:          linear-gradient(135deg, #059669 0%, #10B981 100%);
+  --gradient-deep:             linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+  --gradient-teal:             linear-gradient(135deg, #059669 0%, #10B981 100%);
 
   /* ── Spacing & Shape Tokens ─────────────────────────────── */
   --space-1:                   4px;
@@ -61,10 +67,11 @@
   --radius-panel:              18px;
   --radius-full:               9999px;
 
-  --shadow-subtle:             0 2px 6px rgba(20, 33, 61, 0.05);
-  --shadow-floating:           0 8px 28px rgba(20, 33, 61, 0.12);
-  --shadow-selected:           0 6px 20px rgba(101, 84, 240, 0.22);
-  --shadow-sheet:              0 -8px 28px rgba(20, 33, 61, 0.10);
+  /* Elevation Shadows */
+  --shadow-subtle:             0 1px 3px rgba(15, 23, 42, 0.05), 0 1px 2px rgba(15, 23, 42, 0.03);
+  --shadow-floating:           0 10px 25px -5px rgba(15, 23, 42, 0.08), 0 8px 10px -6px rgba(15, 23, 42, 0.04);
+  --shadow-selected:           0 8px 24px -4px rgba(79, 70, 229, 0.28);
+  --shadow-sheet:              0 -10px 30px rgba(15, 23, 42, 0.08);
 
   --transition-fast:           140ms cubic-bezier(0.16, 1, 0.3, 1);
   --transition-normal:         220ms cubic-bezier(0.16, 1, 0.3, 1);
@@ -88,41 +95,45 @@
   --shadow-card:               var(--shadow-floating);
 }
 
-/* ── Dark Mode ──────────────────────────────────────────── */
+/* ── Dark Mode (Deep Frosted Obsidian) ───────────────────── */
 [data-theme="dark"] {
-  --color-background:          #0B132B;
-  --color-surface:             #14213D;
-  --color-surface-secondary:   #1E2C4A;
-  --color-subtle-highlight:    #1F2F52;
-  --color-text:                #F8F9FC;
-  --color-text-secondary:      #B3BDD1;
-  --color-text-muted:          #747B93;
-  --color-border:              #28385E;
-  --color-border-strong:       #374B7A;
+  --color-background:          #080C14; /* Deep Obsidian Void */
+  --color-surface:             #0F172A; /* Slate 900 */
+  --color-surface-secondary:   #1E293B; /* Slate 800 */
+  --color-surface-highlight:   rgba(99, 102, 241, 0.16);
+  --color-subtle-highlight:    rgba(99, 102, 241, 0.12);
+  --color-surface-glass:       rgba(15, 23, 42, 0.85);
+  --color-glass-border:        rgba(255, 255, 255, 0.09);
+  --color-text:                #F8FAFC; /* Slate 50 */
+  --color-text-secondary:      #94A3B8; /* Slate 400 */
+  --color-text-muted:          #64748B; /* Slate 500 */
+  --color-border:              rgba(255, 255, 255, 0.08);
+  --color-border-strong:       rgba(255, 255, 255, 0.16);
 
-  --color-brand:               #F8F9FC;
-  --color-primary:             #805CFF;
-  --color-primary-hover:       #9678FF;
-  --color-accent:              #F2B705;
-  --color-teal:                #16B5AD;
+  --color-brand:               #F8FAFC;
+  --color-primary:             #6366F1; /* Electric Indigo */
+  --color-primary-hover:       #818CF8;
+  --color-primary-glow:        rgba(99, 102, 241, 0.35);
+  --color-accent:              #FBBF24; /* Warm Gold */
+  --color-teal:                #34D399; /* Emerald */
 
   --color-success:             #34D399;
-  --color-success-bg:          rgba(52, 211, 153, 0.12);
+  --color-success-bg:          rgba(52, 211, 153, 0.14);
   --color-warning:             #FBBF24;
-  --color-warning-bg:          rgba(251, 191, 36, 0.12);
+  --color-warning-bg:          rgba(251, 191, 36, 0.14);
   --color-error:               #F87171;
-  --color-error-bg:            rgba(248, 113, 113, 0.12);
+  --color-error-bg:            rgba(248, 113, 113, 0.14);
   --color-info:                #60A5FA;
-  --color-info-bg:             rgba(96, 165, 250, 0.12);
+  --color-info-bg:             rgba(96, 165, 250, 0.14);
 
-  --shadow-floating:           0 12px 32px rgba(0, 0, 0, 0.45);
-  --shadow-selected:           0 4px 16px rgba(32, 160, 165, 0.25);
-  --shadow-sheet:              0 -10px 30px rgba(0, 0, 0, 0.50);
+  --shadow-floating:           0 14px 36px rgba(0, 0, 0, 0.55);
+  --shadow-selected:           0 6px 20px rgba(99, 102, 241, 0.32);
+  --shadow-sheet:              0 -12px 34px rgba(0, 0, 0, 0.60);
 
-  /* Update compatibility aliases */
+  /* Compatibility aliases */
   --clr-primary:               var(--color-primary);
-  --clr-primary-light:         #38B2B7;
-  --clr-primary-dark:          #162E3B;
+  --clr-primary-light:         #818CF8;
+  --clr-primary-dark:          #080C14;
   --clr-ink:                   var(--color-text);
   --clr-ink-muted:             var(--color-text-muted);
   --clr-soft:                  var(--color-surface-secondary);
@@ -134,7 +145,7 @@
 /* ── Typography & Global Elements ───────────────────────── */
 html, body {
   height: 100%;
-  font-family: 'Inter', 'Noto Sans Ethiopic', system-ui, -apple-system, sans-serif;
+  font-family: 'Plus Jakarta Sans', 'Noto Sans Ethiopic', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   font-size: 14.5px;
   line-height: 1.5;
   color: var(--color-text);
@@ -142,6 +153,7 @@ html, body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow: hidden;
+  letter-spacing: -0.01em;
 }
 
 #root {
@@ -152,12 +164,29 @@ html, body {
 
 h1, h2, h3, h4 {
   color: var(--color-text);
-  font-family: 'Inter', 'Noto Sans Ethiopic', sans-serif;
+  font-family: 'Plus Jakarta Sans', 'Noto Sans Ethiopic', sans-serif;
+  letter-spacing: -0.025em;
+  font-weight: 700;
+}
+h1 { font-size: 1.65rem; font-weight: 800; line-height: 1.25; }
+h2 { font-size: 1.35rem; font-weight: 750; line-height: 1.3; }
+h3 { font-size: 1.10rem; font-weight: 700; line-height: 1.35; }
+h4 { font-size: 0.95rem; font-weight: 650; line-height: 1.4; }
+
+/* Tabular Numerals for Fares and Distances */
+.tabular-nums, .fare-display, .distance-display {
+  font-family: 'JetBrains Mono', 'Plus Jakarta Sans', monospace;
+  font-variant-numeric: tabular-nums;
   letter-spacing: -0.02em;
 }
-h1 { font-size: 1.65rem; font-weight: 750; line-height: 1.25; }
-h2 { font-size: 1.35rem; font-weight: 700; line-height: 1.3; }
-h3 { font-size: 1.10rem; font-weight: 650; line-height: 1.35; }
+
+/* Glassmorphism utility */
+.glass-surface {
+  background: var(--color-surface-glass);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid var(--color-glass-border);
+}
 h4 { font-size: 0.95rem; font-weight: 600; line-height: 1.4; }
 
 p, li { line-height: 1.55; }
@@ -208,28 +237,30 @@ a:hover { text-decoration: underline; }
   background: var(--gradient-primary);
   color: #FFFFFF;
   border: none;
-  box-shadow: 0 4px 14px rgba(101, 84, 240, 0.28);
+  box-shadow: 0 4px 16px rgba(79, 70, 229, 0.30);
+  letter-spacing: -0.01em;
 }
 .btn-primary:hover {
-  box-shadow: 0 6px 20px rgba(101, 84, 240, 0.38);
+  box-shadow: 0 6px 22px rgba(79, 70, 229, 0.42);
   transform: translateY(-1.5px);
 }
 .btn-primary:active {
   transform: scale(0.98);
-  box-shadow: 0 2px 8px rgba(101, 84, 240, 0.22);
+  box-shadow: 0 2px 8px rgba(79, 70, 229, 0.22);
 }
 
 .btn-secondary {
   background-color: var(--color-surface-secondary);
   color: var(--color-text);
   border-color: var(--color-border);
+  letter-spacing: -0.01em;
 }
 .btn-secondary:hover {
   background-color: var(--color-surface);
   border-color: var(--color-primary);
   color: var(--color-primary);
   transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(101, 84, 240, 0.12);
+  box-shadow: 0 3px 10px rgba(79, 70, 229, 0.12);
 }
 .btn-secondary:active {
   transform: scale(0.98);
@@ -271,17 +302,45 @@ a:hover { text-decoration: underline; }
   width: 100%;
 }
 
+/* ── Live GPS Radar Pulsing Dot ──────────────────────────── */
+@keyframes pulseGpsDot {
+  0% {
+    transform: scale(0.92);
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.75);
+  }
+  70% {
+    transform: scale(1.08);
+    box-shadow: 0 0 0 7px rgba(16, 185, 129, 0);
+  }
+  100% {
+    transform: scale(0.92);
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+  }
+}
+
+.live-gps-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #10B981;
+  display: inline-block;
+  animation: pulseGpsDot 2s infinite cubic-bezier(0.4, 0, 0.6, 1);
+  flex-shrink: 0;
+}
+
 /* ── Top Header Navigation Bar ──────────────────────────── */
 .urban-top-navbar,
 .urban-top-nav {
   height: 64px;
   min-height: 64px;
-  background-color: var(--color-surface);
+  background: var(--color-surface-glass);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
   border-bottom: 1px solid var(--color-border);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 20px;
+  padding: 0 24px;
   z-index: 900;
   position: relative;
   box-shadow: var(--shadow-subtle);
@@ -607,20 +666,25 @@ a:hover { text-decoration: underline; }
 .urban-map-control-btn {
   width: 42px;
   height: 42px;
-  border-radius: var(--radius-control);
-  background-color: var(--color-surface);
+  border-radius: 12px;
+  background: var(--color-surface-glass);
+  backdrop-filter: blur(16px) saturate(160%);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
   color: var(--color-text);
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-glass-border);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: var(--shadow-subtle);
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.08);
   cursor: pointer;
-  transition: background-color var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast);
+  transition: all var(--transition-fast);
 }
 .urban-map-control-btn:hover {
-  background-color: var(--color-surface-secondary);
-  border-color: var(--color-border-strong);
+  background-color: var(--color-surface);
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  transform: translateY(-1.5px);
+  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.12);
 }
 .urban-map-control-btn:active {
   transform: scale(0.96);
@@ -995,25 +1059,33 @@ a:hover { text-decoration: underline; }
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  height: 32px;
-  padding: 0 12px;
+  height: 34px;
+  padding: 0 14px;
   border-radius: var(--radius-full);
-  background-color: var(--color-surface);
+  background: var(--color-surface-glass);
+  backdrop-filter: blur(14px) saturate(160%);
+  -webkit-backdrop-filter: blur(14px) saturate(160%);
   border: 1px solid var(--color-border);
   color: var(--color-text);
-  font-size: 0.80rem;
+  font-size: 0.82rem;
   font-weight: 600;
   cursor: pointer;
   white-space: nowrap;
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.05);
   transition: all var(--transition-fast);
 }
 .urban-chip:hover {
-  background-color: var(--color-surface-secondary);
+  background-color: var(--color-surface);
+  border-color: var(--color-border-strong);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(15, 23, 42, 0.08);
 }
 .urban-chip.active {
-  background-color: var(--color-brand);
+  background: var(--gradient-primary);
   color: #FFFFFF;
-  border-color: var(--color-brand);
+  border-color: transparent;
+  box-shadow: 0 4px 14px rgba(79, 70, 229, 0.35);
+  transform: translateY(-1px);
 }
 
 /* ── BottomSheet Overlay & Sheet ────────────────────────── */
@@ -1072,7 +1144,8 @@ a:hover { text-decoration: underline; }
   .bottom-sheet-handle {
     display: none;
   }
-  .mobile-only-bottom-sheet {
+  .mobile-only-bottom-sheet,
+  .mobile-only-overlay {
     display: none !important;
   }
 }

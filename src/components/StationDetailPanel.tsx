@@ -161,9 +161,9 @@ export function StationDetailPanel({
         <button
           onClick={() => onWalkMeThere(station)}
           style={{
-            padding: '10px 14px',
+            padding: '11px 16px',
             borderRadius: 12,
-            background: 'linear-gradient(135deg, #087E8B 0%, #16B5AD 100%)',
+            background: 'var(--gradient-emerald)',
             color: '#FFFFFF',
             border: 'none',
             fontSize: '0.88rem',
@@ -172,8 +172,8 @@ export function StationDetailPanel({
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            gap: 6,
-            boxShadow: '0 3px 12px rgba(8, 126, 139, 0.25)',
+            gap: 7,
+            boxShadow: '0 4px 14px rgba(16, 185, 129, 0.30)',
             transition: 'all 0.15s ease',
           }}
         >
@@ -184,9 +184,9 @@ export function StationDetailPanel({
         <button
           onClick={() => onPlanFromStation(station)}
           style={{
-            padding: '10px 14px',
+            padding: '11px 16px',
             borderRadius: 12,
-            background: 'linear-gradient(135deg, #6554F0 0%, #805CFF 100%)',
+            background: 'var(--gradient-primary)',
             color: '#FFFFFF',
             border: 'none',
             fontSize: '0.88rem',
@@ -195,8 +195,8 @@ export function StationDetailPanel({
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            gap: 6,
-            boxShadow: '0 3px 12px rgba(101, 84, 240, 0.25)',
+            gap: 7,
+            boxShadow: '0 4px 14px rgba(79, 70, 229, 0.32)',
             transition: 'all 0.15s ease',
           }}
         >
@@ -206,10 +206,10 @@ export function StationDetailPanel({
       </div>
 
       {/* Destinations & Fares Table */}
-      <div style={{ borderRadius: 14, border: '1px solid var(--color-border)', overflow: 'hidden', marginBottom: 16 }}>
+      <div style={{ borderRadius: 16, border: '1px solid var(--color-border)', overflow: 'hidden', marginBottom: 16, boxShadow: '0 2px 8px rgba(15, 23, 42, 0.04)' }}>
         <div
           style={{
-            padding: '10px 14px',
+            padding: '11px 16px',
             background: 'var(--color-surface-secondary)',
             borderBottom: '1px solid var(--color-border)',
             display: 'flex',
@@ -217,15 +217,15 @@ export function StationDetailPanel({
             alignItems: 'center',
           }}
         >
-          <span style={{ fontSize: '0.78rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--color-text-secondary)' }}>
+          <span style={{ fontSize: '0.78rem', fontWeight: 750, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--color-text-secondary)' }}>
             Destinations & Fares ({stationLines.length})
           </span>
-          <span style={{ fontSize: '0.72rem', color: 'var(--color-primary)', fontWeight: 600 }}>
+          <span style={{ fontSize: '0.72rem', color: 'var(--color-primary)', fontWeight: 650, letterSpacing: '0.02em' }}>
             Official Addis Ababa Rate
           </span>
         </div>
 
-        <div style={{ padding: '0 14px', background: 'var(--color-surface)' }}>
+        <div style={{ padding: '0 16px', background: 'var(--color-surface)' }}>
           {stationLines.length === 0 ? (
             <p style={{ padding: '16px 0', fontSize: '0.85rem', color: 'var(--color-text-muted)', textAlign: 'center' }}>
               No fare lines recorded yet.
@@ -243,7 +243,7 @@ export function StationDetailPanel({
                 }}
               >
                 <div>
-                  <div style={{ fontSize: '0.92rem', fontWeight: 600, color: 'var(--color-text)' }}>
+                  <div style={{ fontSize: '0.92rem', fontWeight: 650, color: 'var(--color-text)' }}>
                     {pickName(line.destination_am, line.destination_en, lang)}
                   </div>
                   {line.direction && (
@@ -254,8 +254,8 @@ export function StationDetailPanel({
                 </div>
 
                 <div style={{ textAlign: 'right' }}>
-                  <div style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--color-primary)' }}>
-                    {line.fare_birr} birr
+                  <div className="tabular-nums" style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--color-primary)' }}>
+                    {line.fare_birr} <span style={{ fontSize: '0.78rem', fontWeight: 600, color: 'var(--color-text-secondary)' }}>birr</span>
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 6, marginTop: 4 }}>
                     {confirmedFares[line.id] ? (
@@ -267,14 +267,15 @@ export function StationDetailPanel({
                         type="button"
                         onClick={() => setConfirmedFares((prev) => ({ ...prev, [line.id]: true }))}
                         style={{
-                          padding: '2px 8px',
+                          padding: '3px 8px',
                           borderRadius: 6,
                           fontSize: '0.72rem',
-                          fontWeight: 600,
-                          background: 'rgba(8, 126, 139, 0.08)',
+                          fontWeight: 650,
+                          background: 'rgba(79, 70, 229, 0.08)',
                           color: 'var(--color-primary)',
-                          border: '1px solid rgba(8, 126, 139, 0.2)',
+                          border: '1px solid rgba(79, 70, 229, 0.2)',
                           cursor: 'pointer',
+                          transition: 'all 0.15s ease',
                         }}
                         title={lang === 'am' ? 'ዋጋው አሁንም ትክክል መሆኑን ያረጋግጡ' : 'Confirm this fare is still current'}
                       >

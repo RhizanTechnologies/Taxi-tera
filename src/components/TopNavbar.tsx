@@ -114,13 +114,14 @@ export function TopNavbar({
             alignItems: 'center',
             background: isFocused ? 'var(--color-surface)' : 'var(--color-surface-secondary)',
             border: isFocused ? '1.5px solid var(--color-primary)' : '1px solid var(--color-border)',
-            borderRadius: 12,
-            padding: '0 14px',
+            borderRadius: 20,
+            padding: '0 16px',
+            height: 42,
             transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
-            boxShadow: isFocused ? '0 0 0 3px rgba(101, 84, 240, 0.15)' : 'none',
+            boxShadow: isFocused ? '0 0 0 3.5px var(--color-primary-glow)' : 'inset 0 1px 2px rgba(15, 23, 42, 0.03)',
           }}
         >
-          <Search size={18} color={isFocused ? 'var(--color-primary)' : 'var(--color-text-muted)'} />
+          <Search size={17} color={isFocused ? 'var(--color-primary)' : 'var(--color-text-muted)'} />
           <input
             type="text"
             value={query}
@@ -129,10 +130,11 @@ export function TopNavbar({
             placeholder={lang === 'am' ? 'ጣቢያ፣ መድረሻ ወይም የት እንደቆሙ ፈልጉ...' : 'Search stations, destinations, or landmarks...'}
             style={{
               width: '100%',
-              padding: '10px 10px',
+              padding: '8px 10px',
               border: 'none',
               background: 'transparent',
-              fontSize: '0.9rem',
+              fontSize: '0.88rem',
+              fontWeight: 500,
               color: 'var(--color-text)',
               outline: 'none',
               fontFamily: 'inherit',
@@ -165,7 +167,7 @@ export function TopNavbar({
               left: 0,
               right: 0,
               background: 'var(--color-surface)',
-              borderRadius: 14,
+              borderRadius: 16,
               border: '1px solid var(--color-border)',
               boxShadow: 'var(--shadow-floating)',
               overflow: 'hidden',
@@ -241,7 +243,7 @@ export function TopNavbar({
 
       {/* ── Right: Action Buttons & Preferences ─────────────── */}
       <div className="top-nav-actions-wrap">
-        {/* Quick Location Badge */}
+        {/* Quick Location Badge with Live Pulse Dot */}
         {onOpenLocationPicker && (
           <button
             onClick={onOpenLocationPicker}
@@ -249,9 +251,9 @@ export function TopNavbar({
             style={{
               display: 'flex',
               alignItems: 'center',
-              gap: 5,
-              padding: '7px 10px',
-              borderRadius: 10,
+              gap: 6,
+              padding: '7px 12px',
+              borderRadius: 20,
               background: 'var(--color-surface-secondary)',
               color: 'var(--color-text)',
               border: '1px solid var(--color-border)',
@@ -263,8 +265,9 @@ export function TopNavbar({
             }}
             title={lang === 'am' ? 'ያለህበትን ቦታ ቀይር' : 'Change Location'}
           >
-            <MapPin size={15} color="var(--color-primary)" />
-            <span style={{ maxWidth: 100, overflow: 'hidden', textOverflow: 'ellipsis' }}>
+            <span className="live-gps-dot" />
+            <MapPin size={14} color="var(--color-primary)" />
+            <span style={{ maxWidth: 105, overflow: 'hidden', textOverflow: 'ellipsis' }}>
               {locationName || (lang === 'am' ? 'መገኛዬ' : 'My Location')}
             </span>
           </button>
@@ -277,16 +280,16 @@ export function TopNavbar({
           style={{
             display: 'flex',
             alignItems: 'center',
-            gap: 6,
-            padding: '8px 14px',
-            borderRadius: 10,
-            background: 'linear-gradient(135deg, #6554F0 0%, #805CFF 100%)',
+            gap: 7,
+            padding: '8px 16px',
+            borderRadius: 12,
+            background: 'var(--gradient-primary)',
             color: '#FFFFFF',
             border: 'none',
-            fontSize: '0.85rem',
-            fontWeight: 600,
+            fontSize: '0.86rem',
+            fontWeight: 700,
             cursor: 'pointer',
-            boxShadow: '0 3px 10px rgba(101, 84, 240, 0.25)',
+            boxShadow: '0 4px 16px rgba(79, 70, 229, 0.32)',
             transition: 'transform 0.15s ease, box-shadow 0.15s ease',
           }}
         >
@@ -303,7 +306,7 @@ export function TopNavbar({
             alignItems: 'center',
             gap: 6,
             padding: '8px 14px',
-            borderRadius: 10,
+            borderRadius: 12,
             background: 'var(--color-surface-secondary)',
             color: 'var(--color-text)',
             border: '1px solid var(--color-border)',
@@ -322,9 +325,9 @@ export function TopNavbar({
           onClick={toggleLanguage}
           title="Toggle Language (Amharic / English)"
           style={{
-            width: 36,
-            height: 36,
-            borderRadius: 10,
+            width: 38,
+            height: 38,
+            borderRadius: 12,
             border: '1px solid var(--color-border)',
             background: 'var(--color-surface-secondary)',
             color: 'var(--color-text)',
@@ -349,7 +352,7 @@ export function TopNavbar({
           style={{
             width: 38,
             height: 38,
-            borderRadius: 10,
+            borderRadius: 12,
             border: '1px solid var(--color-border)',
             background: 'var(--color-surface-secondary)',
             color: 'var(--color-text)',
@@ -360,7 +363,7 @@ export function TopNavbar({
             transition: 'all 0.15s ease',
           }}
         >
-          {theme === 'light' ? <Moon size={18} /> : <Sun size={18} color="#F2B705" />}
+          {theme === 'light' ? <Moon size={18} /> : <Sun size={18} color="#F59E0B" />}
         </button>
 
         {/* Profile / Account Action (Desktop Only - Mobile has Bottom Nav) */}
@@ -371,7 +374,7 @@ export function TopNavbar({
           style={{
             width: 38,
             height: 38,
-            borderRadius: '50%',
+            borderRadius: 12,
             border: '1.5px solid var(--color-primary)',
             background: user ? 'var(--color-surface-highlight)' : 'var(--color-surface-secondary)',
             color: 'var(--color-primary)',
@@ -382,6 +385,7 @@ export function TopNavbar({
             overflow: 'hidden',
             fontWeight: 700,
             fontSize: '0.85rem',
+            boxShadow: '0 2px 8px rgba(79, 70, 229, 0.15)',
           }}
         >
           {profile?.display_name ? (

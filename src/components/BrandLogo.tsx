@@ -15,12 +15,12 @@ export function BrandLogo({ size = 'md', showSubtitle = true }: BrandLogoProps) 
         style={{
           width: iconSize,
           height: iconSize,
-          borderRadius: size === 'sm' ? 8 : 10,
-          background: 'linear-gradient(135deg, #6554F0 0%, #805CFF 100%)',
+          borderRadius: size === 'sm' ? 8 : 11,
+          background: 'linear-gradient(135deg, #4F46E5 0%, #6366F1 60%, #818CF8 100%)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          boxShadow: '0 4px 14px rgba(101, 84, 240, 0.35)',
+          boxShadow: '0 4px 14px rgba(79, 70, 229, 0.38), inset 0 1px 1px rgba(255, 255, 255, 0.35)',
           position: 'relative',
           flexShrink: 0,
           transition: 'transform 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
@@ -37,8 +37,8 @@ export function BrandLogo({ size = 'md', showSubtitle = true }: BrandLogoProps) 
           strokeLinejoin="round"
         >
           <path d="M4 16c0 .88.39 1.67 1 2.22V20a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-1h8v1a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-1.78c.61-.55 1-1.34 1-2.22V6c0-3.5-3.58-4-8-4s-8 .5-8 4v10Z" />
-          <circle cx="7.5" cy="14.5" r="1.5" fill="#F2B705" />
-          <circle cx="16.5" cy="14.5" r="1.5" fill="#F2B705" />
+          <circle cx="7.5" cy="14.5" r="1.5" fill="#F59E0B" />
+          <circle cx="16.5" cy="14.5" r="1.5" fill="#F59E0B" />
           <line x1="4" y1="9" x2="20" y2="9" />
         </svg>
       </div>
@@ -46,7 +46,7 @@ export function BrandLogo({ size = 'md', showSubtitle = true }: BrandLogoProps) 
       <div style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.15 }}>
         <span
           style={{
-            fontFamily: "'Noto Sans Ethiopic', 'Inter', sans-serif",
+            fontFamily: "'Noto Sans Ethiopic', 'Plus Jakarta Sans', sans-serif",
             fontWeight: 800,
             fontSize: amharicSize,
             color: 'var(--color-brand)',
@@ -58,10 +58,10 @@ export function BrandLogo({ size = 'md', showSubtitle = true }: BrandLogoProps) 
         {showSubtitle && (
           <span
             style={{
-              fontFamily: "'Inter', sans-serif",
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
               fontWeight: 700,
               fontSize: englishSize,
-              letterSpacing: '0.12em',
+              letterSpacing: '0.14em',
               textTransform: 'uppercase',
               color: 'var(--color-primary)',
               marginTop: 1,

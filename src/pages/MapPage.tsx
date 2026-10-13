@@ -1091,7 +1091,7 @@ export default function MapPage() {
       {/* ── 3. Mobile Floating Bottom Sheets (Mobile Only) ──── */}
       {/* Station Details Sheet on Mobile */}
       {selected && !activeTransitJourney && (
-        <BottomSheet open={!!selected} onClose={() => setSelected(null)} className="mobile-only-bottom-sheet">
+        <BottomSheet open={!!selected} onClose={() => setSelected(null)} className="mobile-only-bottom-sheet" overlayClassName="mobile-only-overlay">
           <StationDetailPanel
             station={selected}
             lines={lines}
@@ -1110,7 +1110,7 @@ export default function MapPage() {
 
       {/* Mobile Journey Planner Sheet */}
       {plannerOpen && (
-        <BottomSheet open={plannerOpen} onClose={() => setPlannerOpen(false)} className="mobile-only-bottom-sheet">
+        <BottomSheet open={plannerOpen} onClose={() => setPlannerOpen(false)} className="mobile-only-bottom-sheet" overlayClassName="mobile-only-overlay">
           <DesktopJourneyPlanner
             userPos={userPos}
             stations={stations}
